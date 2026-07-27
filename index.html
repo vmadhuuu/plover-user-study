@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plover User Study Dashboard</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #edf3f8;
+        --panel: #ffffff;
+        --ink: #102132;
+        --muted: #617285;
+        --line: #d7e1ea;
+        --accent: #0f6cbd;
+        --accent-soft: #dcedff;
+        --warn: #b54708;
+        --warn-soft: #fff0d9;
+        --danger: #b42318;
+        --danger-soft: #fde7e6;
+        --good: #027a48;
+        --good-soft: #ddf7ea;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        min-height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(180deg, #f6f9fc 0%, #e6edf4 100%);
+        color: var(--ink);
+      }
+
+      body {
+        padding: 12px;
+      }
+
+      .shell {
+        width: 100%;
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 64px 1fr;
+        gap: 10px;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(16, 33, 50, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(18, 38, 63, 0.08);
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: 22px;
+        letter-spacing: -0.03em;
+      }
+
+      .topbar p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .chip {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--warn-soft);
+        color: var(--warn);
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 10px;
+        align-items: start;
+      }
+
+      .left-column {
+        display: grid;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .brief,
+      .queue,
+      .detail {
+        padding: 14px;
+      }
+
+      .brief h2,
+      .queue h2,
+      .detail h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .brief p,
+      .queue p,
+      .detail p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .brief-card {
+        margin-top: 10px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: linear-gradient(180deg, #f9fbfd 0%, #f0f6fb 100%);
+      }
+
+      .brief-card strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+      }
+
+      .brief-card ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+        font-size: 12px;
+      }
+
+      .metric-strip {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+
+      .metric {
+        padding: 10px;
+        border-radius: 12px;
+        background: #f7fafc;
+        border: 1px solid var(--line);
+      }
+
+      .metric span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+        font-size: 18px;
+      }
+
+      .machine-list {
+        margin-top: 10px;
+        display: grid;
+        gap: 6px;
+        align-content: start;
+      }
+
+      .machine-row {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 10px 12px;
+        background: #fff;
+        display: grid;
+        grid-template-columns: 72px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .machine-row.selected {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        box-shadow: inset 0 0 0 1px rgba(15, 108, 189, 0.18);
+      }
+
+      .machine-id {
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: -0.04em;
+      }
+
+      .machine-meta strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .machine-meta span {
+        display: block;
+        margin-top: 3px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .badge {
+        display: inline-flex;
+        min-width: 74px;
+        justify-content: center;
+        align-items: center;
+        padding: 7px 9px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .badge.high {
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      .badge.medium {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+
+      .badge.low {
+        background: var(--good-soft);
+        color: var(--good);
+      }
+
+      .detail {
+        display: grid;
+        grid-template-rows: auto auto auto auto;
+        gap: 10px;
+      }
+
+      .detail-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+      }
+
+      .record {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+
+      .summary-card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px;
+        background: #f8fbfd;
+      }
+
+      .summary-card span {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 16px;
+      }
+
+      .detail-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 10px;
+        align-items: start;
+      }
+
+      .side-stack {
+        display: grid;
+        grid-template-rows: auto auto;
+        gap: 10px;
+      }
+
+      .event-log,
+      .progress-box,
+      .control-box,
+      .banner {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .event-log h3,
+      .progress-box h3,
+      .control-box h3,
+      .banner h3 {
+        margin: 0 0 8px;
+        font-size: 13px;
+      }
+
+      .event-log ul,
+      .progress-box ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+      }
+
+      .progress-box li.done {
+        color: var(--good);
+        font-weight: 600;
+      }
+
+      .banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(180deg, #f9fbfd 0%, #eff5fa 100%);
+      }
+
+      .banner p {
+        margin: 6px 0 0;
+        font-size: 12px;
+      }
+
+      .control-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .field-group {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field-group label {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .segmented {
+        display: grid;
+        gap: 6px;
+      }
+
+      .segmented.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .segmented.three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .segmented button {
+        border: 1px solid var(--line);
+        background: #f7fafc;
+        border-radius: 12px;
+        padding: 10px 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        min-height: 42px;
+      }
+
+      .segmented button.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .save-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .save-message {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .save-btn {
+        border: none;
+        border-radius: 14px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #0f6cbd 0%, #105fb1 100%);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 22px rgba(15, 108, 189, 0.24);
+      }
+
+      @media (max-width: 1180px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .detail-main {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .side-stack {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: auto auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="topbar panel">
+        <div>
+          <h1>Study Ops Maintenance Dashboard</h1>
+          <p>
+            Controlled long-horizon maintenance escalation workflow for
+            user-study repair scenarios.
+          </p>
+        </div>
+        <div class="chip">Single-Operator Study Build</div>
+      </section>
+
+      <section class="content">
+        <section class="left-column">
+          <!-- <article class="brief panel">
+            <h2>Mission Brief</h2>
+            <p>Complete the escalation workflow for the target machine and prepare the case for supervisor review.</p>
+            <div class="brief-card">
+              <strong>Target outcome for each run</strong>
+              <ul>
+                <li>Work on the machine named in the study prompt.</li>
+                <li>Confirm the anomaly from the event log.</li>
+                <li>Raise priority to <strong>High</strong> and assign the requested technician.</li>
+                <li>Choose the requested same-day inspection slot.</li>
+                <li>Open the matching recommendation report and move the case to <strong>Ready for review</strong>.</li>
+              </ul>
+            </div>
+          </article> -->
+
+          <article class="queue panel">
+            <h2>Live Machine Queue</h2>
+            <p>
+              Select the correct machine before completing the rest of the
+              workflow.
+            </p>
+
+            <div class="metric-strip">
+              <div class="metric">
+                <span>Open Tickets</span>
+                <strong>08</strong>
+              </div>
+              <div class="metric">
+                <span>High Priority</span>
+                <strong>03</strong>
+              </div>
+              <div class="metric">
+                <span>Review Queue</span>
+                <strong>02</strong>
+              </div>
+            </div>
+
+            <div class="machine-list" id="machine-list"></div>
+          </article>
+        </section>
+
+        <article class="detail panel">
+          <div class="detail-head">
+            <div>
+              <h2 id="detail-title">Machine M-101</h2>
+              <p id="detail-subtitle">Hydraulic Press</p>
+            </div>
+            <div class="record" id="record-id">Record MT-101-A</div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="summary-card">
+              <span>Priority</span>
+              <strong id="priority-summary">Medium</strong>
+            </div>
+            <div class="summary-card">
+              <span>Assignee</span>
+              <strong id="assignee-summary">Jordan Lee</strong>
+            </div>
+            <div class="summary-card">
+              <span>Inspection</span>
+              <strong id="inspection-summary">Unscheduled</strong>
+            </div>
+            <div class="summary-card">
+              <span>Case Status</span>
+              <strong id="review-summary">Draft</strong>
+            </div>
+          </div>
+
+          <div class="detail-main">
+            <div class="event-log">
+              <h3>Recent Event Log</h3>
+              <ul id="event-log-list"></ul>
+            </div>
+
+            <div class="side-stack">
+              <div class="progress-box">
+                <h3>Escalation Checklist</h3>
+                <ul id="progress-list"></ul>
+              </div>
+
+              <div class="control-box">
+                <h3>Workflow Controls</h3>
+                <div class="control-grid">
+                  <div class="field-group">
+                    <label>Priority</label>
+                    <div class="segmented three" id="priority-buttons"></div>
+                  </div>
+                  <div class="field-group">
+                    <label>Assignee</label>
+                    <div class="segmented three" id="assignee-buttons"></div>
+                  </div>
+                  <div class="field-group">
+                    <label>Inspection Window</label>
+                    <div class="segmented three" id="inspection-buttons"></div>
+                  </div>
+                  <div class="field-group">
+                    <label>Recommendation Report</label>
+                    <div class="segmented two" id="report-buttons"></div>
+                  </div>
+                  <div class="field-group" style="grid-column: 1 / -1">
+                    <label>Supervisor Review Status</label>
+                    <div class="segmented two" id="review-buttons"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="banner">
+            <div>
+              <h3>Workflow Banner</h3>
+              <p id="save-message">
+                Select the correct record, complete the escalation workflow,
+                then commit the case update.
+              </p>
+            </div>
+            <button class="save-btn" id="save-button" type="button">
+              Commit Case Update
+            </button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <script>
+      const records = [
+        {
+          id: "M-101",
+          name: "Hydraulic Press",
+          record: "MT-101-A",
+          anomaly: "Guard sensor spikes during startup.",
+          priority: "Medium",
+          assignee: "Jordan Lee",
+          baselineAssignee: "Jordan Lee",
+          inspection: "Unscheduled",
+          report: "None",
+          review: "Draft",
+          status: "medium",
+          events: [
+            "07:52 - Guard sensor crossed the alert threshold twice during warm-up.",
+            "08:07 - Lubrication completed successfully on the prior shift.",
+            "08:18 - Operator flagged the line for a calibration check later this week.",
+          ],
+        },
+        {
+          id: "M-102",
+          name: "Packaging Arm",
+          record: "MT-102-D",
+          anomaly: "Minor conveyor alignment issue.",
+          priority: "Low",
+          assignee: "Priya Singh",
+          baselineAssignee: "Priya Singh",
+          inspection: "Unscheduled",
+          report: "None",
+          review: "Draft",
+          status: "low",
+          events: [
+            "07:40 - Cycle count within expected bounds for the morning shift.",
+            "08:02 - Package alignment drifted 2 mm before auto-correction.",
+            "08:19 - Follow-up inspection recommended but not urgent.",
+          ],
+        },
+        {
+          id: "M-103",
+          name: "Conveyor Belt",
+          record: "MT-103-B",
+          anomaly: "Transfer motor vibration above baseline.",
+          priority: "Medium",
+          assignee: "Jordan Lee",
+          baselineAssignee: "Jordan Lee",
+          inspection: "Unscheduled",
+          report: "None",
+          review: "Draft",
+          status: "medium",
+          events: [
+            "08:11 - Transfer motor vibration climbed 7% after the last reset.",
+            "08:26 - Belt tension passed inspection but should be monitored.",
+            "08:34 - Pending assignee update before maintenance window approval.",
+          ],
+        },
+        {
+          id: "M-104",
+          name: "Cooling Pump",
+          record: "MT-104-C",
+          anomaly: "Overheating with rising vibration during restart.",
+          priority: "Low",
+          assignee: "Morgan Patel",
+          baselineAssignee: "Morgan Patel",
+          inspection: "Unscheduled",
+          report: "None",
+          review: "Draft",
+          status: "low",
+          events: [
+            "08:24 - Temperature climbed above the restart baseline on M-104.",
+            "08:31 - Vibration increased during pump spin-up after the cooling reset.",
+            "08:42 - QA requested same-day inspection before the next production window.",
+          ],
+        },
+      ];
+
+      const priorities = ["Low", "Medium", "High"];
+      const assignees = ["Jordan Lee", "Priya Singh", "Alex Kim"];
+      const inspections = [
+        "Today 2:00 PM",
+        "Today 4:00 PM",
+        "Tomorrow 9:00 AM",
+      ];
+      const reports = ["M-101 Report", "M-103 Report", "M-104 Report"];
+      const reviewStates = ["Draft", "Ready for review"];
+
+      let selectedId = "M-101";
+
+      const listEl = document.getElementById("machine-list");
+      const detailTitle = document.getElementById("detail-title");
+      const detailSubtitle = document.getElementById("detail-subtitle");
+      const recordId = document.getElementById("record-id");
+      const prioritySummary = document.getElementById("priority-summary");
+      const assigneeSummary = document.getElementById("assignee-summary");
+      const inspectionSummary = document.getElementById("inspection-summary");
+      const reviewSummary = document.getElementById("review-summary");
+      const eventLogList = document.getElementById("event-log-list");
+      const progressList = document.getElementById("progress-list");
+      const priorityButtons = document.getElementById("priority-buttons");
+      const assigneeButtons = document.getElementById("assignee-buttons");
+      const inspectionButtons = document.getElementById("inspection-buttons");
+      const reportButtons = document.getElementById("report-buttons");
+      const reviewButtons = document.getElementById("review-buttons");
+      const saveButton = document.getElementById("save-button");
+      const saveMessage = document.getElementById("save-message");
+
+      function currentRecord() {
+        return records.find((record) => record.id === selectedId);
+      }
+
+      function renderList() {
+        listEl.innerHTML = "";
+        records.forEach((record) => {
+          const row = document.createElement("button");
+          row.type = "button";
+          row.className =
+            "machine-row" + (record.id === selectedId ? " selected" : "");
+          row.dataset.machineId = record.id;
+          row.innerHTML = `
+            <div class="machine-id">${record.id}</div>
+            <div class="machine-meta">
+              <strong>${record.name}</strong>
+              <span>${record.anomaly}</span>
+            </div>
+            <div class="badge ${record.status}">${record.priority}</div>
+          `;
+          row.addEventListener("click", () => {
+            selectedId = record.id;
+            saveMessage.textContent = `Working on ${record.id}. Complete the escalation workflow and commit the case update.`;
+            render();
+          });
+          listEl.appendChild(row);
+        });
+      }
+
+      function renderButtons(
+        container,
+        values,
+        currentValue,
+        onSelect,
+        className,
+      ) {
+        container.innerHTML = "";
+        container.className = className;
+        values.forEach((value) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = value;
+          button.className = value === currentValue ? "active" : "";
+          button.addEventListener("click", () => {
+            onSelect(value);
+            render();
+          });
+          container.appendChild(button);
+        });
+      }
+
+      function buildChecklist(record) {
+        return [
+          {
+            label: "Target machine selected",
+            done: true,
+          },
+          {
+            label: "Anomaly confirmed from the event log",
+            done: true,
+          },
+          {
+            label: "Priority raised to High",
+            done: record.priority === "High",
+          },
+          {
+            label: "Case assigned to the requested technician",
+            done: record.assignee !== record.baselineAssignee,
+          },
+          {
+            label: "Inspection window scheduled",
+            done: record.inspection !== "Unscheduled",
+          },
+          {
+            label: "Matching recommendation report opened",
+            done: record.report === `${record.id} Report`,
+          },
+          {
+            label: "Case moved to Ready for review",
+            done: record.review === "Ready for review",
+          },
+        ];
+      }
+
+      function renderDetail() {
+        const record = currentRecord();
+
+        detailTitle.textContent = `Machine ${record.id}`;
+        detailSubtitle.textContent = record.name;
+        recordId.textContent = `Record ${record.record}`;
+        prioritySummary.textContent = record.priority;
+        assigneeSummary.textContent = record.assignee;
+        inspectionSummary.textContent = record.inspection;
+        reviewSummary.textContent = record.review;
+
+        eventLogList.innerHTML = "";
+        record.events.forEach((event) => {
+          const item = document.createElement("li");
+          item.textContent = event;
+          eventLogList.appendChild(item);
+        });
+
+        progressList.innerHTML = "";
+        buildChecklist(record).forEach((step) => {
+          const item = document.createElement("li");
+          item.textContent = `${step.done ? "✓" : "○"} ${step.label}`;
+          if (step.done) item.classList.add("done");
+          progressList.appendChild(item);
+        });
+
+        renderButtons(
+          priorityButtons,
+          priorities,
+          record.priority,
+          (value) => {
+            record.priority = value;
+            record.status =
+              value === "High" ? "high" : value === "Medium" ? "medium" : "low";
+          },
+          "segmented three",
+        );
+
+        renderButtons(
+          assigneeButtons,
+          assignees,
+          record.assignee,
+          (value) => {
+            record.assignee = value;
+          },
+          "segmented three",
+        );
+
+        renderButtons(
+          inspectionButtons,
+          inspections,
+          record.inspection,
+          (value) => {
+            record.inspection = value;
+          },
+          "segmented three",
+        );
+
+        renderButtons(
+          reportButtons,
+          reports,
+          record.report,
+          (value) => {
+            record.report = value;
+          },
+          "segmented two",
+        );
+
+        renderButtons(
+          reviewButtons,
+          reviewStates,
+          record.review,
+          (value) => {
+            record.review = value;
+          },
+          "segmented two",
+        );
+      }
+
+      function render() {
+        renderList();
+        renderDetail();
+      }
+
+      saveButton.addEventListener("click", () => {
+        const record = currentRecord();
+        saveMessage.textContent = `Saved ${record.id}: priority ${record.priority}, assignee ${record.assignee}, inspection ${record.inspection}, report ${record.report}, status ${record.review}.`;
+      });
+
+      render();
+    </script>
+  </body>
+</html>
