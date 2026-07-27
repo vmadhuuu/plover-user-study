@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plover User Study Dashboard</title>
+    <title>Ops Handoff Workspace</title>
     <style>
       :root {
         color-scheme: light;
@@ -20,6 +20,7 @@
         --danger-soft: #fde7e6;
         --good: #027a48;
         --good-soft: #ddf7ea;
+        --shadow: 0 12px 28px rgba(18, 38, 63, 0.08);
       }
 
       * {
@@ -51,10 +52,10 @@
       }
 
       .panel {
-        background: rgba(255, 255, 255, 0.94);
+        background: rgba(255, 255, 255, 0.96);
         border: 1px solid rgba(16, 33, 50, 0.08);
         border-radius: 16px;
-        box-shadow: 0 10px 24px rgba(18, 38, 63, 0.08);
+        box-shadow: var(--shadow);
       }
 
       .topbar {
@@ -89,165 +90,132 @@
 
       .content {
         display: grid;
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 290px 1fr;
         gap: 10px;
         align-items: start;
       }
 
       .left-column {
         display: grid;
-        grid-template-rows: auto auto;
         gap: 10px;
-        align-content: start;
       }
 
-      .brief,
-      .queue,
-      .detail {
+      .panel-body {
         padding: 14px;
       }
 
-      .brief h2,
-      .queue h2,
+      .panel-body h2,
       .detail h2 {
         margin: 0;
         font-size: 17px;
       }
 
-      .brief p,
-      .queue p,
+      .panel-body p,
       .detail p {
         margin: 6px 0 0;
         color: var(--muted);
         font-size: 12px;
       }
 
-      .brief-card {
-        margin-top: 10px;
-        padding: 12px;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        background: linear-gradient(180deg, #f9fbfd 0%, #f0f6fb 100%);
-      }
-
-      .brief-card strong {
-        display: block;
-        margin-bottom: 6px;
-        font-size: 13px;
-      }
-
-      .brief-card ul {
-        margin: 0;
-        padding-left: 18px;
-        display: grid;
-        gap: 4px;
-        font-size: 12px;
-      }
-
-      .metric-strip {
+      .case-list {
         margin-top: 10px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
+        gap: 8px;
       }
 
-      .metric {
-        padding: 10px;
-        border-radius: 12px;
-        background: #f7fafc;
-        border: 1px solid var(--line);
-      }
-
-      .metric span {
-        display: block;
-        font-size: 11px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      .metric strong {
-        display: block;
-        margin-top: 4px;
-        font-size: 18px;
-      }
-
-      .machine-list {
-        margin-top: 10px;
-        display: grid;
-        gap: 6px;
-        align-content: start;
-      }
-
-      .machine-row {
+      .case-card {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 14px;
-        padding: 10px 12px;
+        padding: 12px;
         background: #fff;
         display: grid;
-        grid-template-columns: 72px 1fr auto;
         gap: 8px;
-        align-items: center;
         text-align: left;
         cursor: pointer;
       }
 
-      .machine-row.selected {
+      .case-card.active {
         border-color: var(--accent);
         background: var(--accent-soft);
         box-shadow: inset 0 0 0 1px rgba(15, 108, 189, 0.18);
       }
 
-      .machine-id {
+      .case-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 10px;
+      }
+
+      .case-id {
+        font-size: 17px;
         font-weight: 800;
-        font-size: 18px;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.03em;
       }
 
-      .machine-meta strong {
-        display: block;
-        font-size: 13px;
-      }
-
-      .machine-meta span {
-        display: block;
-        margin-top: 3px;
-        font-size: 11px;
-        color: var(--muted);
-      }
-
-      .badge {
+      .case-tag {
         display: inline-flex;
-        min-width: 74px;
-        justify-content: center;
         align-items: center;
-        padding: 7px 9px;
+        justify-content: center;
+        min-width: 72px;
+        padding: 6px 8px;
         border-radius: 999px;
+        background: #eef5fb;
+        color: var(--accent);
         font-size: 10px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
 
-      .badge.high {
-        background: var(--danger-soft);
-        color: var(--danger);
+      .case-card strong,
+      .note-card strong,
+      .matrix-card strong {
+        display: block;
+        font-size: 13px;
       }
 
-      .badge.medium {
-        background: var(--warn-soft);
-        color: var(--warn);
+      .case-card span,
+      .matrix-card span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
       }
 
-      .badge.low {
-        background: var(--good-soft);
-        color: var(--good);
+      .note-card {
+        margin-top: 10px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #f9fbfd 0%, #f1f7fb 100%);
+      }
+
+      .note-card ul {
+        margin: 8px 0 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+      }
+
+      .matrix-list {
+        margin-top: 10px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .matrix-card {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfdff;
       }
 
       .detail {
+        padding: 14px;
         display: grid;
-        grid-template-rows: auto auto auto auto;
         gap: 10px;
       }
 
@@ -255,6 +223,7 @@
         display: flex;
         justify-content: space-between;
         align-items: start;
+        gap: 10px;
       }
 
       .record {
@@ -265,7 +234,7 @@
       .summary-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
+        gap: 8px;
       }
 
       .summary-card {
@@ -280,7 +249,7 @@
         font-size: 11px;
         color: var(--muted);
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
       }
 
       .summary-card strong {
@@ -289,64 +258,157 @@
         font-size: 16px;
       }
 
-      .detail-main {
+      .workspace-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
         gap: 10px;
         align-items: start;
       }
 
-      .side-stack {
+      .stack {
         display: grid;
-        grid-template-rows: auto auto;
         gap: 10px;
       }
 
-      .event-log,
-      .progress-box,
-      .control-box,
-      .banner {
+      .module {
         border: 1px solid var(--line);
         border-radius: 16px;
         padding: 12px;
         background: #fff;
       }
 
-      .event-log h3,
-      .progress-box h3,
-      .control-box h3,
-      .banner h3 {
-        margin: 0 0 8px;
+      .module h3 {
+        margin: 0;
         font-size: 13px;
       }
 
-      .event-log ul,
-      .progress-box ul {
-        margin: 0;
-        padding-left: 18px;
-        display: grid;
-        gap: 6px;
-        font-size: 12px;
-      }
-
-      .progress-box li.done {
-        color: var(--good);
-        font-weight: 600;
-      }
-
-      .banner {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: linear-gradient(180deg, #f9fbfd 0%, #eff5fa 100%);
-      }
-
-      .banner p {
+      .module p {
         margin: 6px 0 0;
+        color: var(--muted);
         font-size: 12px;
+      }
+
+      .map-surface {
+        position: relative;
+        margin-top: 10px;
+        height: 280px;
+        border-radius: 16px;
+        border: 1px solid #cfe0ef;
+        background:
+          linear-gradient(180deg, #f9fcff 0%, #eef5fb 100%),
+          repeating-linear-gradient(
+            90deg,
+            transparent 0 63px,
+            rgba(15, 108, 189, 0.05) 63px 64px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent 0 63px,
+            rgba(15, 108, 189, 0.05) 63px 64px
+          );
+        overflow: hidden;
+      }
+
+      .map-label {
+        position: absolute;
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .pipe {
+        position: absolute;
+        background: rgba(16, 33, 50, 0.15);
+        border-radius: 999px;
+      }
+
+      .zone-button {
+        position: absolute;
+        border: 1px solid #9bc2e4;
+        border-radius: 14px;
+        background: linear-gradient(180deg, #ffffff 0%, #f0f6fb 100%);
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        box-shadow: 0 8px 16px rgba(16, 33, 50, 0.08);
+      }
+
+      .zone-button.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .zone-button.relevant {
+        box-shadow: 0 0 0 2px rgba(181, 71, 8, 0.12);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 12px;
+      }
+
+      th,
+      td {
+        padding: 8px 6px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+
+      tr.selected {
+        background: #f5faff;
+      }
+
+      .row-button {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f7fafc;
+        padding: 7px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .row-button.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #eef5fb;
+        color: #21435f;
+        font-size: 11px;
+        font-weight: 700;
       }
 
       .control-grid {
+        margin-top: 10px;
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 10px;
@@ -355,6 +417,10 @@
       .field-group {
         display: grid;
         gap: 6px;
+      }
+
+      .field-group.full {
+        grid-column: 1 / -1;
       }
 
       .field-group label {
@@ -377,6 +443,10 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
+      .segmented.four {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
       .segmented button {
         border: 1px solid var(--line);
         background: #f7fafc;
@@ -394,16 +464,38 @@
         color: var(--accent);
       }
 
-      .save-row {
+      .checklist {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+      }
+
+      .checklist li.done {
+        color: var(--good);
+        font-weight: 600;
+      }
+
+      .banner {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px;
+        background: linear-gradient(180deg, #f9fbfd 0%, #eff5fa 100%);
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 12px;
       }
 
-      .save-message {
+      .banner h3 {
+        margin: 0;
+        font-size: 13px;
+      }
+
+      .banner p {
+        margin: 6px 0 0;
         font-size: 12px;
-        color: var(--muted);
       }
 
       .save-btn {
@@ -418,18 +510,13 @@
         box-shadow: 0 10px 22px rgba(15, 108, 189, 0.24);
       }
 
-      @media (max-width: 1180px) {
+      @media (max-width: 1200px) {
         .content {
           grid-template-columns: 1fr;
         }
 
-        .detail-main {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .side-stack {
-          grid-template-columns: minmax(0, 1fr);
-          grid-template-rows: auto auto;
+        .workspace-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -438,136 +525,216 @@
     <div class="shell">
       <section class="topbar panel">
         <div>
-          <h1>Study Ops Maintenance Dashboard</h1>
+          <h1>Ops Handoff Workspace</h1>
           <p>
-            Controlled long-horizon maintenance escalation workflow for
-            user-study repair scenarios.
+            Controlled long-horizon escalation workflow with spatial ambiguity,
+            evidence transfer, and packet repair checkpoints.
           </p>
         </div>
-        <div class="chip">Single-Operator Study Build</div>
+        <div class="chip">Formative Study Build</div>
       </section>
 
       <section class="content">
         <section class="left-column">
-          <!-- <article class="brief panel">
-            <h2>Mission Brief</h2>
-            <p>Complete the escalation workflow for the target machine and prepare the case for supervisor review.</p>
-            <div class="brief-card">
-              <strong>Target outcome for each run</strong>
-              <ul>
-                <li>Work on the machine named in the study prompt.</li>
-                <li>Confirm the anomaly from the event log.</li>
-                <li>Raise priority to <strong>High</strong> and assign the requested technician.</li>
-                <li>Choose the requested same-day inspection slot.</li>
-                <li>Open the matching recommendation report and move the case to <strong>Ready for review</strong>.</li>
-              </ul>
-            </div>
-          </article> -->
+          <article class="panel panel-body">
+            <h2>Case Queue</h2>
+            <p>Select the active case packet before reviewing the evidence.</p>
+            <div class="case-list" id="case-list"></div>
+          </article>
 
-          <article class="queue panel">
-            <h2>Live Machine Queue</h2>
+          <article class="panel panel-body">
+            <h2>Shift Notes</h2>
+            <p>Use the notes to resolve the mirrored-asset ambiguity.</p>
+            <div class="note-card">
+              <strong id="notes-title">Zone C handoff notes</strong>
+              <ul id="notes-list"></ul>
+            </div>
+          </article>
+
+          <article class="panel panel-body">
+            <h2>Technician Availability</h2>
             <p>
-              Select the correct machine before completing the rest of the
-              workflow.
+              Choose a technician certified for the zone and available today.
             </p>
-
-            <div class="metric-strip">
-              <div class="metric">
-                <span>Open Tickets</span>
-                <strong>08</strong>
-              </div>
-              <div class="metric">
-                <span>High Priority</span>
-                <strong>03</strong>
-              </div>
-              <div class="metric">
-                <span>Review Queue</span>
-                <strong>02</strong>
-              </div>
-            </div>
-
-            <div class="machine-list" id="machine-list"></div>
+            <div class="matrix-list" id="technician-list"></div>
           </article>
         </section>
 
         <article class="detail panel">
           <div class="detail-head">
             <div>
-              <h2 id="detail-title">Machine M-101</h2>
-              <p id="detail-subtitle">Hydraulic Press</p>
+              <h2 id="detail-title">CASE-201</h2>
+              <p id="detail-subtitle">Zone C coolant escalation packet</p>
             </div>
-            <div class="record" id="record-id">Record MT-101-A</div>
+            <div class="record" id="record-id">Packet PKT-C201-A</div>
           </div>
 
           <div class="summary-grid">
             <div class="summary-card">
-              <span>Priority</span>
-              <strong id="priority-summary">Medium</strong>
+              <span>Selected Asset</span>
+              <strong id="asset-summary">Unselected</strong>
             </div>
             <div class="summary-card">
-              <span>Assignee</span>
-              <strong id="assignee-summary">Jordan Lee</strong>
+              <span>Anomaly Code</span>
+              <strong id="code-summary">Unconfirmed</strong>
             </div>
             <div class="summary-card">
-              <span>Inspection</span>
-              <strong id="inspection-summary">Unscheduled</strong>
+              <span>Evidence Rows</span>
+              <strong id="evidence-summary">0 rows</strong>
             </div>
             <div class="summary-card">
-              <span>Case Status</span>
+              <span>Review Status</span>
               <strong id="review-summary">Draft</strong>
             </div>
           </div>
 
-          <div class="detail-main">
-            <div class="event-log">
-              <h3>Recent Event Log</h3>
-              <ul id="event-log-list"></ul>
+          <div class="workspace-grid">
+            <div class="stack">
+              <section class="module">
+                <h3>Plant Map</h3>
+                <p>
+                  Resolve the mirrored target from the notes, then select the
+                  correct asset on the map.
+                </p>
+                <div class="map-surface">
+                  <div class="map-label" style="left: 18px; top: 16px">
+                    Zone C
+                  </div>
+                  <div class="map-label" style="left: 258px; top: 132px">
+                    Zone D
+                  </div>
+                  <div
+                    class="pipe"
+                    style="left: 56px; top: 72px; width: 172px; height: 14px"
+                  ></div>
+                  <div
+                    class="pipe"
+                    style="left: 240px; top: 176px; width: 176px; height: 14px"
+                  ></div>
+                  <div
+                    class="pipe"
+                    style="left: 166px; top: 86px; width: 14px; height: 124px"
+                  ></div>
+                  <div
+                    class="pipe"
+                    style="left: 326px; top: 92px; width: 14px; height: 124px"
+                  ></div>
+                  <button
+                    class="zone-button"
+                    id="zone-c-left"
+                    style="left: 28px; top: 102px; width: 132px; height: 72px"
+                    type="button"
+                  >
+                    C-17L
+                  </button>
+                  <button
+                    class="zone-button"
+                    id="zone-c-right"
+                    style="left: 170px; top: 102px; width: 132px; height: 72px"
+                    type="button"
+                  >
+                    C-17R
+                  </button>
+                  <button
+                    class="zone-button"
+                    id="zone-d-upper"
+                    style="left: 254px; top: 64px; width: 170px; height: 82px"
+                    type="button"
+                  >
+                    D-12A
+                  </button>
+                  <button
+                    class="zone-button"
+                    id="zone-d-lower"
+                    style="left: 254px; top: 154px; width: 170px; height: 82px"
+                    type="button"
+                  >
+                    D-12B
+                  </button>
+                  <div class="map-label" style="left: 108px; top: 188px">
+                    Inspection ladder
+                  </div>
+                  <div class="map-label" style="left: 310px; top: 248px">
+                    Yellow bypass rail
+                  </div>
+                </div>
+              </section>
+
+              <section class="module">
+                <h3>Escalation Checklist</h3>
+                <p>
+                  Localized repair should preserve any progress already made.
+                </p>
+                <ul class="checklist" id="progress-list"></ul>
+              </section>
             </div>
 
-            <div class="side-stack">
-              <div class="progress-box">
-                <h3>Escalation Checklist</h3>
-                <ul id="progress-list"></ul>
-              </div>
+            <div class="stack">
+              <section class="module">
+                <h3>Sensor Evidence Table</h3>
+                <p>
+                  Confirm the anomaly code and transfer the matching evidence
+                  rows into the packet.
+                </p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Row</th>
+                      <th>Asset</th>
+                      <th>Code</th>
+                      <th>Confidence</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="evidence-body"></tbody>
+                </table>
+              </section>
 
-              <div class="control-box">
-                <h3>Workflow Controls</h3>
+              <section class="module">
+                <h3>Escalation Packet</h3>
+                <p>
+                  Complete the packet after selecting the correct asset and
+                  evidence.
+                </p>
+
+                <div class="pill-row" id="selected-evidence"></div>
+
                 <div class="control-grid">
                   <div class="field-group">
-                    <label>Priority</label>
-                    <div class="segmented three" id="priority-buttons"></div>
+                    <label>Anomaly Code</label>
+                    <div class="segmented four" id="code-buttons"></div>
                   </div>
                   <div class="field-group">
-                    <label>Assignee</label>
+                    <label>Assigned Technician</label>
                     <div class="segmented three" id="assignee-buttons"></div>
                   </div>
                   <div class="field-group">
-                    <label>Inspection Window</label>
-                    <div class="segmented three" id="inspection-buttons"></div>
+                    <label>Inspection Slot</label>
+                    <div class="segmented four" id="slot-buttons"></div>
                   </div>
                   <div class="field-group">
-                    <label>Recommendation Report</label>
-                    <div class="segmented two" id="report-buttons"></div>
+                    <label>Packet Attachment</label>
+                    <div class="segmented three" id="report-buttons"></div>
                   </div>
-                  <div class="field-group" style="grid-column: 1 / -1">
-                    <label>Supervisor Review Status</label>
+                  <div class="field-group full">
+                    <label>Review Status</label>
                     <div class="segmented two" id="review-buttons"></div>
                   </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
 
           <div class="banner">
             <div>
-              <h3>Workflow Banner</h3>
+              <h3>Packet Banner</h3>
               <p id="save-message">
-                Select the correct record, complete the escalation workflow,
-                then commit the case update.
+                Resolve the target asset, transfer the correct evidence, and
+                commit the escalation packet.
               </p>
             </div>
             <button class="save-btn" id="save-button" type="button">
-              Commit Case Update
+              Commit Packet
             </button>
           </div>
         </article>
@@ -575,138 +742,195 @@
     </div>
 
     <script>
-      const records = [
+      const technicians = [
         {
-          id: "M-101",
-          name: "Hydraulic Press",
-          record: "MT-101-A",
-          anomaly: "Guard sensor spikes during startup.",
-          priority: "Medium",
-          assignee: "Jordan Lee",
-          baselineAssignee: "Jordan Lee",
-          inspection: "Unscheduled",
-          report: "None",
-          review: "Draft",
-          status: "medium",
-          events: [
-            "07:52 - Guard sensor crossed the alert threshold twice during warm-up.",
-            "08:07 - Lubrication completed successfully on the prior shift.",
-            "08:18 - Operator flagged the line for a calibration check later this week.",
+          name: "Alex Kim",
+          certification: "Zone C cooling loops",
+          availability: "Today 4:30 PM",
+          summary:
+            "Certified for mirrored coolant branches and manifold checks.",
+        },
+        {
+          name: "Priya Singh",
+          certification: "Zone D return pumps",
+          availability: "Today 2:30 PM",
+          summary:
+            "Certified for pump recovery packets and bypass diagnostics.",
+        },
+        {
+          name: "Morgan Patel",
+          certification: "General mechanical",
+          availability: "Tomorrow 9:00 AM",
+          summary:
+            "Available next day only and not zone-specialized for these cases.",
+        },
+      ];
+
+      const cases = [
+        {
+          id: "CASE-201",
+          label: "Plan-Only",
+          subtitle: "Zone C coolant escalation packet",
+          packet: "PKT-C201-A",
+          zone: "Zone C",
+          targetAsset: "C-17L",
+          mirroredAsset: "C-17R",
+          targetCode: "HX-44",
+          evidenceTargets: ["EV-882", "EV-901"],
+          assignee: "Alex Kim",
+          slot: "Today 4:30 PM",
+          report: "Cooling Loop Packet",
+          noteTitle: "Zone C handoff notes",
+          notes: [
+            "The target unit is on the west branch, immediately left of the inspection ladder.",
+            "Do not use the mirrored east-branch unit even though both rows share the same branch label.",
+            "Use the high-confidence HX evidence rows that match the coolant spike during the 08:10-08:20 window.",
+          ],
+          summary: "Resolve C-17L vs C-17R before preparing the packet.",
+          queueHint: "Spatial ambiguity on mirrored coolant branches.",
+          evidenceRows: [
+            {
+              id: "EV-882",
+              asset: "C-17L",
+              code: "HX-44",
+              confidence: "High",
+            },
+            {
+              id: "EV-901",
+              asset: "C-17L",
+              code: "HX-44",
+              confidence: "High",
+            },
+            {
+              id: "EV-887",
+              asset: "C-17R",
+              code: "HX-44",
+              confidence: "Medium",
+            },
+            {
+              id: "EV-914",
+              asset: "C-17R",
+              code: "HX-41",
+              confidence: "Low",
+            },
           ],
         },
         {
-          id: "M-102",
-          name: "Packaging Arm",
-          record: "MT-102-D",
-          anomaly: "Minor conveyor alignment issue.",
-          priority: "Low",
+          id: "CASE-318",
+          label: "Full Plover",
+          subtitle: "Zone D pump escalation packet",
+          packet: "PKT-D318-B",
+          zone: "Zone D",
+          targetAsset: "D-12A",
+          mirroredAsset: "D-12B",
+          targetCode: "VP-09",
+          evidenceTargets: ["EV-417", "EV-433"],
           assignee: "Priya Singh",
-          baselineAssignee: "Priya Singh",
-          inspection: "Unscheduled",
-          report: "None",
-          review: "Draft",
-          status: "low",
-          events: [
-            "07:40 - Cycle count within expected bounds for the morning shift.",
-            "08:02 - Package alignment drifted 2 mm before auto-correction.",
-            "08:19 - Follow-up inspection recommended but not urgent.",
+          slot: "Today 2:30 PM",
+          report: "Pump Recovery Packet",
+          noteTitle: "Zone D handoff notes",
+          notes: [
+            "The target pump is on the upper return branch above the yellow bypass rail.",
+            "Ignore the mirrored lower-branch pump even though both assets share the D-12 series label.",
+            "Use the two high-confidence VP rows captured during the restart jitter after 09:00.",
           ],
-        },
-        {
-          id: "M-103",
-          name: "Conveyor Belt",
-          record: "MT-103-B",
-          anomaly: "Transfer motor vibration above baseline.",
-          priority: "Medium",
-          assignee: "Jordan Lee",
-          baselineAssignee: "Jordan Lee",
-          inspection: "Unscheduled",
-          report: "None",
-          review: "Draft",
-          status: "medium",
-          events: [
-            "08:11 - Transfer motor vibration climbed 7% after the last reset.",
-            "08:26 - Belt tension passed inspection but should be monitored.",
-            "08:34 - Pending assignee update before maintenance window approval.",
-          ],
-        },
-        {
-          id: "M-104",
-          name: "Cooling Pump",
-          record: "MT-104-C",
-          anomaly: "Overheating with rising vibration during restart.",
-          priority: "Low",
-          assignee: "Morgan Patel",
-          baselineAssignee: "Morgan Patel",
-          inspection: "Unscheduled",
-          report: "None",
-          review: "Draft",
-          status: "low",
-          events: [
-            "08:24 - Temperature climbed above the restart baseline on M-104.",
-            "08:31 - Vibration increased during pump spin-up after the cooling reset.",
-            "08:42 - QA requested same-day inspection before the next production window.",
+          summary: "Resolve D-12A vs D-12B before preparing the packet.",
+          queueHint: "Upper vs lower return branch ambiguity.",
+          evidenceRows: [
+            {
+              id: "EV-417",
+              asset: "D-12A",
+              code: "VP-09",
+              confidence: "High",
+            },
+            {
+              id: "EV-433",
+              asset: "D-12A",
+              code: "VP-09",
+              confidence: "High",
+            },
+            {
+              id: "EV-425",
+              asset: "D-12B",
+              code: "VP-09",
+              confidence: "Medium",
+            },
+            {
+              id: "EV-439",
+              asset: "D-12B",
+              code: "VP-12",
+              confidence: "Low",
+            },
           ],
         },
       ];
 
-      const priorities = ["Low", "Medium", "High"];
-      const assignees = ["Jordan Lee", "Priya Singh", "Alex Kim"];
-      const inspections = [
-        "Today 2:00 PM",
-        "Today 4:00 PM",
+      const anomalyCodes = ["HX-41", "HX-44", "VP-09", "VP-12"];
+      const assignees = ["Alex Kim", "Priya Singh", "Morgan Patel"];
+      const slots = [
+        "Today 1:30 PM",
+        "Today 2:30 PM",
+        "Today 4:30 PM",
         "Tomorrow 9:00 AM",
       ];
-      const reports = ["M-101 Report", "M-103 Report", "M-104 Report"];
+      const reports = [
+        "Cooling Loop Packet",
+        "Pump Recovery Packet",
+        "Bypass Check Memo",
+      ];
       const reviewStates = ["Draft", "Ready for review"];
+      const mapButtons = {
+        "C-17L": document.getElementById("zone-c-left"),
+        "C-17R": document.getElementById("zone-c-right"),
+        "D-12A": document.getElementById("zone-d-upper"),
+        "D-12B": document.getElementById("zone-d-lower"),
+      };
 
-      let selectedId = "M-101";
-
-      const listEl = document.getElementById("machine-list");
+      const caseList = document.getElementById("case-list");
+      const notesTitle = document.getElementById("notes-title");
+      const notesList = document.getElementById("notes-list");
+      const technicianList = document.getElementById("technician-list");
       const detailTitle = document.getElementById("detail-title");
       const detailSubtitle = document.getElementById("detail-subtitle");
       const recordId = document.getElementById("record-id");
-      const prioritySummary = document.getElementById("priority-summary");
-      const assigneeSummary = document.getElementById("assignee-summary");
-      const inspectionSummary = document.getElementById("inspection-summary");
+      const assetSummary = document.getElementById("asset-summary");
+      const codeSummary = document.getElementById("code-summary");
+      const evidenceSummary = document.getElementById("evidence-summary");
       const reviewSummary = document.getElementById("review-summary");
-      const eventLogList = document.getElementById("event-log-list");
-      const progressList = document.getElementById("progress-list");
-      const priorityButtons = document.getElementById("priority-buttons");
+      const evidenceBody = document.getElementById("evidence-body");
+      const selectedEvidence = document.getElementById("selected-evidence");
+      const codeButtons = document.getElementById("code-buttons");
       const assigneeButtons = document.getElementById("assignee-buttons");
-      const inspectionButtons = document.getElementById("inspection-buttons");
+      const slotButtons = document.getElementById("slot-buttons");
       const reportButtons = document.getElementById("report-buttons");
       const reviewButtons = document.getElementById("review-buttons");
+      const progressList = document.getElementById("progress-list");
       const saveButton = document.getElementById("save-button");
       const saveMessage = document.getElementById("save-message");
 
-      function currentRecord() {
-        return records.find((record) => record.id === selectedId);
+      const state = Object.fromEntries(
+        cases.map((item) => [
+          item.id,
+          {
+            selectedAsset: "",
+            anomalyCode: "",
+            evidenceSelection: [],
+            assignee: "",
+            slot: "",
+            report: "",
+            review: "Draft",
+          },
+        ]),
+      );
+
+      let selectedCaseId = cases[0].id;
+
+      function currentCase() {
+        return cases.find((item) => item.id === selectedCaseId);
       }
 
-      function renderList() {
-        listEl.innerHTML = "";
-        records.forEach((record) => {
-          const row = document.createElement("button");
-          row.type = "button";
-          row.className =
-            "machine-row" + (record.id === selectedId ? " selected" : "");
-          row.dataset.machineId = record.id;
-          row.innerHTML = `
-            <div class="machine-id">${record.id}</div>
-            <div class="machine-meta">
-              <strong>${record.name}</strong>
-              <span>${record.anomaly}</span>
-            </div>
-            <div class="badge ${record.status}">${record.priority}</div>
-          `;
-          row.addEventListener("click", () => {
-            selectedId = record.id;
-            saveMessage.textContent = `Working on ${record.id}. Complete the escalation workflow and commit the case update.`;
-            render();
-          });
-          listEl.appendChild(row);
-        });
+      function currentState() {
+        return state[selectedCaseId];
       }
 
       function renderButtons(
@@ -731,127 +955,252 @@
         });
       }
 
-      function buildChecklist(record) {
+      function toggleEvidenceRow(rowId) {
+        const taskState = currentState();
+        const next = taskState.evidenceSelection.includes(rowId)
+          ? taskState.evidenceSelection.filter((item) => item !== rowId)
+          : [...taskState.evidenceSelection, rowId];
+        taskState.evidenceSelection = next.slice(0, 3);
+      }
+
+      function renderCaseQueue() {
+        caseList.innerHTML = "";
+        cases.forEach((item) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className =
+            "case-card" + (item.id === selectedCaseId ? " active" : "");
+          button.innerHTML = `
+            <div class="case-head">
+              <div class="case-id">${item.id}</div>
+              <div class="case-tag">${item.label}</div>
+            </div>
+            <strong>${item.subtitle}</strong>
+            <span>${item.queueHint}</span>
+          `;
+          button.addEventListener("click", () => {
+            selectedCaseId = item.id;
+            saveMessage.textContent =
+              "Resolve the target asset, transfer the correct evidence, and commit the escalation packet.";
+            render();
+          });
+          caseList.appendChild(button);
+        });
+      }
+
+      function renderNotes() {
+        const item = currentCase();
+        notesTitle.textContent = item.noteTitle;
+        notesList.innerHTML = "";
+        item.notes.forEach((note) => {
+          const li = document.createElement("li");
+          li.textContent = note;
+          notesList.appendChild(li);
+        });
+      }
+
+      function renderTechnicians() {
+        const item = currentCase();
+        technicianList.innerHTML = "";
+        technicians.forEach((tech) => {
+          const div = document.createElement("div");
+          div.className = "matrix-card";
+          div.innerHTML = `
+            <strong>${tech.name}</strong>
+            <span>${tech.certification}</span>
+            <span>Availability: ${tech.availability}</span>
+            <span>${tech.summary}</span>
+          `;
+          if (tech.name === item.assignee) {
+            div.style.borderColor = "#0f6cbd";
+            div.style.background = "#eef6ff";
+          }
+          technicianList.appendChild(div);
+        });
+      }
+
+      function renderMap() {
+        const item = currentCase();
+        const taskState = currentState();
+        Object.entries(mapButtons).forEach(([asset, button]) => {
+          button.classList.toggle("active", taskState.selectedAsset === asset);
+          button.classList.toggle(
+            "relevant",
+            asset === item.targetAsset || asset === item.mirroredAsset,
+          );
+        });
+      }
+
+      function buildChecklist() {
+        const item = currentCase();
+        const taskState = currentState();
+        const evidenceDone =
+          taskState.evidenceSelection.length === item.evidenceTargets.length &&
+          item.evidenceTargets.every((rowId) =>
+            taskState.evidenceSelection.includes(rowId),
+          );
         return [
           {
-            label: "Target machine selected",
-            done: true,
+            label: `Correct asset selected (${item.targetAsset})`,
+            done: taskState.selectedAsset === item.targetAsset,
           },
           {
-            label: "Anomaly confirmed from the event log",
-            done: true,
+            label: `Anomaly code confirmed (${item.targetCode})`,
+            done: taskState.anomalyCode === item.targetCode,
           },
           {
-            label: "Priority raised to High",
-            done: record.priority === "High",
+            label: `Evidence rows transferred (${item.evidenceTargets.join(", ")})`,
+            done: evidenceDone,
           },
           {
-            label: "Case assigned to the requested technician",
-            done: record.assignee !== record.baselineAssignee,
+            label: `Technician assigned (${item.assignee})`,
+            done: taskState.assignee === item.assignee,
           },
           {
-            label: "Inspection window scheduled",
-            done: record.inspection !== "Unscheduled",
+            label: `Same-day slot selected (${item.slot})`,
+            done: taskState.slot === item.slot,
           },
           {
-            label: "Matching recommendation report opened",
-            done: record.report === `${record.id} Report`,
+            label: `Correct packet attached (${item.report})`,
+            done: taskState.report === item.report,
           },
           {
-            label: "Case moved to Ready for review",
-            done: record.review === "Ready for review",
+            label: "Packet moved to Ready for review",
+            done: taskState.review === "Ready for review",
           },
         ];
       }
 
-      function renderDetail() {
-        const record = currentRecord();
-
-        detailTitle.textContent = `Machine ${record.id}`;
-        detailSubtitle.textContent = record.name;
-        recordId.textContent = `Record ${record.record}`;
-        prioritySummary.textContent = record.priority;
-        assigneeSummary.textContent = record.assignee;
-        inspectionSummary.textContent = record.inspection;
-        reviewSummary.textContent = record.review;
-
-        eventLogList.innerHTML = "";
-        record.events.forEach((event) => {
-          const item = document.createElement("li");
-          item.textContent = event;
-          eventLogList.appendChild(item);
+      function renderEvidence() {
+        const item = currentCase();
+        const taskState = currentState();
+        evidenceBody.innerHTML = "";
+        item.evidenceRows.forEach((row) => {
+          const tr = document.createElement("tr");
+          const selected = taskState.evidenceSelection.includes(row.id);
+          if (selected) tr.classList.add("selected");
+          tr.innerHTML = `
+            <td>${row.id}</td>
+            <td>${row.asset}</td>
+            <td>${row.code}</td>
+            <td>${row.confidence}</td>
+            <td><button class="row-button${selected ? " active" : ""}" type="button">${selected ? "Added" : "Add"}</button></td>
+          `;
+          tr.querySelector("button").addEventListener("click", () => {
+            toggleEvidenceRow(row.id);
+            render();
+          });
+          evidenceBody.appendChild(tr);
         });
+      }
+
+      function renderPacket() {
+        const item = currentCase();
+        const taskState = currentState();
+
+        detailTitle.textContent = item.id;
+        detailSubtitle.textContent = item.subtitle;
+        recordId.textContent = `Packet ${item.packet}`;
+        assetSummary.textContent = taskState.selectedAsset || "Unselected";
+        codeSummary.textContent = taskState.anomalyCode || "Unconfirmed";
+        evidenceSummary.textContent = `${taskState.evidenceSelection.length} rows`;
+        reviewSummary.textContent = taskState.review;
+
+        selectedEvidence.innerHTML = "";
+        if (taskState.evidenceSelection.length === 0) {
+          const placeholder = document.createElement("div");
+          placeholder.className = "pill";
+          placeholder.textContent = "No evidence rows added";
+          selectedEvidence.appendChild(placeholder);
+        } else {
+          taskState.evidenceSelection.forEach((rowId) => {
+            const pill = document.createElement("div");
+            pill.className = "pill";
+            pill.textContent = rowId;
+            selectedEvidence.appendChild(pill);
+          });
+        }
 
         progressList.innerHTML = "";
-        buildChecklist(record).forEach((step) => {
-          const item = document.createElement("li");
-          item.textContent = `${step.done ? "✓" : "○"} ${step.label}`;
-          if (step.done) item.classList.add("done");
-          progressList.appendChild(item);
+        buildChecklist().forEach((step) => {
+          const li = document.createElement("li");
+          li.textContent = `${step.done ? "✓" : "○"} ${step.label}`;
+          if (step.done) li.classList.add("done");
+          progressList.appendChild(li);
         });
 
         renderButtons(
-          priorityButtons,
-          priorities,
-          record.priority,
+          codeButtons,
+          anomalyCodes,
+          taskState.anomalyCode,
           (value) => {
-            record.priority = value;
-            record.status =
-              value === "High" ? "high" : value === "Medium" ? "medium" : "low";
+            taskState.anomalyCode = value;
           },
-          "segmented three",
+          "segmented four",
         );
 
         renderButtons(
           assigneeButtons,
           assignees,
-          record.assignee,
+          taskState.assignee,
           (value) => {
-            record.assignee = value;
+            taskState.assignee = value;
           },
           "segmented three",
         );
 
         renderButtons(
-          inspectionButtons,
-          inspections,
-          record.inspection,
+          slotButtons,
+          slots,
+          taskState.slot,
           (value) => {
-            record.inspection = value;
+            taskState.slot = value;
           },
-          "segmented three",
+          "segmented four",
         );
 
         renderButtons(
           reportButtons,
           reports,
-          record.report,
+          taskState.report,
           (value) => {
-            record.report = value;
+            taskState.report = value;
           },
-          "segmented two",
+          "segmented three",
         );
 
         renderButtons(
           reviewButtons,
           reviewStates,
-          record.review,
+          taskState.review,
           (value) => {
-            record.review = value;
+            taskState.review = value;
           },
           "segmented two",
         );
       }
 
-      function render() {
-        renderList();
-        renderDetail();
-      }
+      Object.entries(mapButtons).forEach(([asset, button]) => {
+        button.addEventListener("click", () => {
+          currentState().selectedAsset = asset;
+          render();
+        });
+      });
 
       saveButton.addEventListener("click", () => {
-        const record = currentRecord();
-        saveMessage.textContent = `Saved ${record.id}: priority ${record.priority}, assignee ${record.assignee}, inspection ${record.inspection}, report ${record.report}, status ${record.review}.`;
+        const item = currentCase();
+        const taskState = currentState();
+        saveMessage.textContent = `Saved ${item.id}: asset ${taskState.selectedAsset || "none"}, code ${taskState.anomalyCode || "none"}, evidence ${taskState.evidenceSelection.join(", ") || "none"}, technician ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, packet ${taskState.report || "none"}, status ${taskState.review}.`;
       });
+
+      function render() {
+        renderCaseQueue();
+        renderNotes();
+        renderTechnicians();
+        renderMap();
+        renderEvidence();
+        renderPacket();
+      }
 
       render();
     </script>
