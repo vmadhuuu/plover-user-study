@@ -291,7 +291,7 @@
       .map-surface {
         position: relative;
         margin-top: 10px;
-        height: 280px;
+        height: 320px;
         border-radius: 16px;
         border: 1px solid #cfe0ef;
         background:
@@ -309,12 +309,28 @@
         overflow: hidden;
       }
 
+      .zone-frame {
+        position: absolute;
+        border: 1px dashed rgba(15, 108, 189, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.36);
+      }
+
       .map-label {
         position: absolute;
         font-size: 11px;
         color: var(--muted);
         font-weight: 700;
         letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .landmark-label {
+        position: absolute;
+        font-size: 11px;
+        color: #53677d;
+        font-weight: 700;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
       }
 
@@ -597,32 +613,40 @@
                   correct asset on the map.
                 </p>
                 <div class="map-surface">
+                  <div
+                    class="zone-frame"
+                    style="left: 24px; top: 46px; width: 356px; height: 208px"
+                  ></div>
+                  <div
+                    class="zone-frame"
+                    style="left: 402px; top: 34px; width: 176px; height: 238px"
+                  ></div>
                   <div class="map-label" style="left: 18px; top: 16px">
                     Zone C
                   </div>
-                  <div class="map-label" style="left: 258px; top: 132px">
+                  <div class="map-label" style="left: 422px; top: 16px">
                     Zone D
                   </div>
                   <div
                     class="pipe"
-                    style="left: 56px; top: 72px; width: 172px; height: 14px"
+                    style="left: 72px; top: 74px; width: 250px; height: 12px"
                   ></div>
                   <div
                     class="pipe"
-                    style="left: 240px; top: 176px; width: 176px; height: 14px"
+                    style="left: 180px; top: 86px; width: 12px; height: 136px"
                   ></div>
                   <div
                     class="pipe"
-                    style="left: 166px; top: 86px; width: 14px; height: 124px"
+                    style="left: 334px; top: 146px; width: 92px; height: 12px"
                   ></div>
                   <div
                     class="pipe"
-                    style="left: 326px; top: 92px; width: 14px; height: 124px"
+                    style="left: 484px; top: 78px; width: 12px; height: 158px"
                   ></div>
                   <button
                     class="zone-button"
                     id="zone-c-left"
-                    style="left: 28px; top: 102px; width: 132px; height: 72px"
+                    style="left: 54px; top: 112px; width: 132px; height: 70px"
                     type="button"
                   >
                     C-17L
@@ -630,7 +654,7 @@
                   <button
                     class="zone-button"
                     id="zone-c-right"
-                    style="left: 170px; top: 102px; width: 132px; height: 72px"
+                    style="left: 214px; top: 112px; width: 132px; height: 70px"
                     type="button"
                   >
                     C-17R
@@ -638,7 +662,7 @@
                   <button
                     class="zone-button"
                     id="zone-d-upper"
-                    style="left: 254px; top: 64px; width: 170px; height: 82px"
+                    style="left: 430px; top: 68px; width: 118px; height: 66px"
                     type="button"
                   >
                     D-12A
@@ -646,15 +670,27 @@
                   <button
                     class="zone-button"
                     id="zone-d-lower"
-                    style="left: 254px; top: 154px; width: 170px; height: 82px"
+                    style="left: 430px; top: 172px; width: 118px; height: 66px"
                     type="button"
                   >
                     D-12B
                   </button>
-                  <div class="map-label" style="left: 108px; top: 188px">
+                  <div class="landmark-label" style="left: 86px; top: 90px">
+                    West branch
+                  </div>
+                  <div class="landmark-label" style="left: 246px; top: 90px">
+                    East branch
+                  </div>
+                  <div class="landmark-label" style="left: 443px; top: 46px">
+                    Upper return
+                  </div>
+                  <div class="landmark-label" style="left: 443px; top: 252px">
+                    Lower return
+                  </div>
+                  <div class="map-label" style="left: 112px; top: 214px">
                     Inspection ladder
                   </div>
-                  <div class="map-label" style="left: 310px; top: 248px">
+                  <div class="map-label" style="left: 414px; top: 286px">
                     Yellow bypass rail
                   </div>
                 </div>
@@ -681,7 +717,9 @@
                     <tr>
                       <th>Row</th>
                       <th>Asset</th>
+                      <th>Time</th>
                       <th>Code</th>
+                      <th>Channel</th>
                       <th>Confidence</th>
                       <th>Action</th>
                     </tr>
@@ -783,8 +821,8 @@
           noteTitle: "Zone C handoff notes",
           notes: [
             "The target unit is on the west branch, immediately left of the inspection ladder.",
-            "Do not use the mirrored east-branch unit even though both rows share the same branch label.",
-            "Use the high-confidence HX evidence rows that match the coolant spike during the 08:10-08:20 window.",
+            "Do not use the mirrored east-branch unit even if it shows the same anomaly code.",
+            "Use the evidence rows from the 08:10-08:20 window on the west return channels only.",
           ],
           summary: "Resolve C-17L vs C-17R before preparing the packet.",
           queueHint: "Spatial ambiguity on mirrored coolant branches.",
@@ -792,26 +830,34 @@
             {
               id: "EV-882",
               asset: "C-17L",
+              time: "08:11",
               code: "HX-44",
+              channel: "West-A",
               confidence: "High",
             },
             {
               id: "EV-901",
               asset: "C-17L",
+              time: "08:19",
               code: "HX-44",
+              channel: "West-B",
               confidence: "High",
             },
             {
               id: "EV-887",
               asset: "C-17R",
+              time: "08:12",
               code: "HX-44",
-              confidence: "Medium",
+              channel: "East-A",
+              confidence: "High",
             },
             {
               id: "EV-914",
               asset: "C-17R",
-              code: "HX-41",
-              confidence: "Low",
+              time: "08:22",
+              code: "HX-44",
+              channel: "East-B",
+              confidence: "High",
             },
           ],
         },
@@ -831,8 +877,8 @@
           noteTitle: "Zone D handoff notes",
           notes: [
             "The target pump is on the upper return branch above the yellow bypass rail.",
-            "Ignore the mirrored lower-branch pump even though both assets share the D-12 series label.",
-            "Use the two high-confidence VP rows captured during the restart jitter after 09:00.",
+            "Ignore the mirrored lower-branch pump even if its anomaly code also reads VP-09.",
+            "Use the evidence rows captured after 09:00 on the upper return channels only.",
           ],
           summary: "Resolve D-12A vs D-12B before preparing the packet.",
           queueHint: "Upper vs lower return branch ambiguity.",
@@ -840,26 +886,34 @@
             {
               id: "EV-417",
               asset: "D-12A",
+              time: "09:03",
               code: "VP-09",
+              channel: "Upper-A",
               confidence: "High",
             },
             {
               id: "EV-433",
               asset: "D-12A",
+              time: "09:11",
               code: "VP-09",
+              channel: "Upper-B",
               confidence: "High",
             },
             {
               id: "EV-425",
               asset: "D-12B",
+              time: "08:56",
               code: "VP-09",
-              confidence: "Medium",
+              channel: "Lower-A",
+              confidence: "High",
             },
             {
               id: "EV-439",
               asset: "D-12B",
-              code: "VP-12",
-              confidence: "Low",
+              time: "09:17",
+              code: "VP-09",
+              channel: "Lower-B",
+              confidence: "High",
             },
           ],
         },
@@ -1082,7 +1136,9 @@
           tr.innerHTML = `
             <td>${row.id}</td>
             <td>${row.asset}</td>
+            <td>${row.time}</td>
             <td>${row.code}</td>
+            <td>${row.channel}</td>
             <td>${row.confidence}</td>
             <td><button class="row-button${selected ? " active" : ""}" type="button">${selected ? "Added" : "Add"}</button></td>
           `;
