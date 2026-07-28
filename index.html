@@ -1195,6 +1195,35 @@
           )
           .join("");
 
+        const zoneMarkup =
+          item.zone === "Zone C"
+            ? `
+                <div class="zone-frame" style="left: 48px; top: 58px; width: 464px; height: 218px"></div>
+                <div class="map-label" style="left: 24px; top: 18px">${item.zone}</div>
+                <div class="map-label" style="left: 344px; top: 18px">${item.topologyLabels.region}</div>
+                <div class="pipe" style="left: 110px; top: 92px; width: 300px; height: 12px"></div>
+                <div class="pipe" style="left: 262px; top: 104px; width: 12px; height: 132px"></div>
+                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 90px; top: 132px; width: 146px; height: 74px" type="button" data-asset="C-17L">C-17L</button>
+                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 300px; top: 132px; width: 146px; height: 74px" type="button" data-asset="C-17R">C-17R</button>
+                <div class="landmark-label" style="left: 130px; top: 108px">${item.topologyLabels.leftHint}</div>
+                <div class="landmark-label" style="left: 340px; top: 108px">${item.topologyLabels.rightHint}</div>
+                <div class="map-label" style="left: 196px; top: 244px">Inspection ladder</div>
+                <div class="map-label" style="left: 174px; top: 68px">West manifold</div>
+              `
+            : `
+                <div class="zone-frame" style="left: 72px; top: 48px; width: 412px; height: 236px"></div>
+                <div class="map-label" style="left: 24px; top: 18px">${item.zone}</div>
+                <div class="map-label" style="left: 314px; top: 18px">${item.topologyLabels.region}</div>
+                <div class="pipe" style="left: 266px; top: 92px; width: 12px; height: 164px"></div>
+                <div class="pipe" style="left: 174px; top: 166px; width: 168px; height: 12px"></div>
+                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 198px; top: 82px; width: 146px; height: 74px" type="button" data-asset="D-12A">D-12A</button>
+                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 198px; top: 184px; width: 146px; height: 74px" type="button" data-asset="D-12B">D-12B</button>
+                <div class="landmark-label" style="left: 220px; top: 60px">${item.topologyLabels.upperHint}</div>
+                <div class="landmark-label" style="left: 220px; top: 270px">${item.topologyLabels.lowerHint}</div>
+                <div class="map-label" style="left: 158px; top: 288px">Yellow bypass rail</div>
+                <div class="map-label" style="left: 126px; top: 150px">Return pump spine</div>
+              `;
+
         return `
           <div class="module-grid two-col">
             <div>
@@ -1204,24 +1233,7 @@
               <h3>Topology Map</h3>
               <p>Choose the active asset after reconciling notes, protocol rules, and physical landmarks.</p>
               <div class="map-surface">
-                <div class="zone-frame" style="left: 24px; top: 52px; width: 362px; height: 214px"></div>
-                <div class="zone-frame" style="left: 404px; top: 40px; width: 176px; height: 244px"></div>
-                <div class="map-label" style="left: 18px; top: 18px">${item.zone}</div>
-                <div class="map-label" style="left: 404px; top: 18px">${item.topologyLabels.region}</div>
-                <div class="pipe" style="left: 76px; top: 84px; width: 248px; height: 12px"></div>
-                <div class="pipe" style="left: 178px; top: 96px; width: 12px; height: 136px"></div>
-                <div class="pipe" style="left: 332px; top: 150px; width: 92px; height: 12px"></div>
-                <div class="pipe" style="left: 486px; top: 84px; width: 12px; height: 160px"></div>
-                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 52px; top: 122px; width: 132px; height: 70px" type="button" data-asset="C-17L">C-17L</button>
-                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 214px; top: 122px; width: 132px; height: 70px" type="button" data-asset="C-17R">C-17R</button>
-                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 434px; top: 80px; width: 118px; height: 66px" type="button" data-asset="D-12A">D-12A</button>
-                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 434px; top: 186px; width: 118px; height: 66px" type="button" data-asset="D-12B">D-12B</button>
-                <div class="landmark-label" style="left: 84px; top: 100px">${item.topologyLabels.leftHint}</div>
-                <div class="landmark-label" style="left: 246px; top: 100px">${item.topologyLabels.rightHint}</div>
-                <div class="landmark-label" style="left: 438px; top: 58px">${item.topologyLabels.upperHint}</div>
-                <div class="landmark-label" style="left: 438px; top: 266px">${item.topologyLabels.lowerHint}</div>
-                <div class="map-label" style="left: 102px; top: 224px">Inspection ladder</div>
-                <div class="map-label" style="left: 410px; top: 294px">Yellow bypass rail</div>
+                ${zoneMarkup}
               </div>
             </div>
           </div>
