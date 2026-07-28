@@ -8,16 +8,14 @@
       :root {
         color-scheme: light;
         --bg: #edf3f8;
-        --panel: #ffffff;
-        --ink: #102132;
-        --muted: #617285;
-        --line: #d7e1ea;
+        --panel: rgba(255, 255, 255, 0.96);
+        --ink: #112234;
+        --muted: #5d7085;
+        --line: #d7e2ec;
         --accent: #0f6cbd;
         --accent-soft: #dcedff;
-        --warn: #b54708;
-        --warn-soft: #fff0d9;
-        --danger: #b42318;
-        --danger-soft: #fde7e6;
+        --warn: #9a4f07;
+        --warn-soft: #fff1db;
         --good: #027a48;
         --good-soft: #ddf7ea;
         --shadow: 0 12px 28px rgba(18, 38, 63, 0.08);
@@ -35,7 +33,7 @@
         overflow-x: hidden;
         overflow-y: auto;
         font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        background: linear-gradient(180deg, #f6f9fc 0%, #e6edf4 100%);
+        background: linear-gradient(180deg, #f6f9fc 0%, #e7eef5 100%);
         color: var(--ink);
       }
 
@@ -52,8 +50,8 @@
       }
 
       .panel {
-        background: rgba(255, 255, 255, 0.96);
-        border: 1px solid rgba(16, 33, 50, 0.08);
+        background: var(--panel);
+        border: 1px solid rgba(17, 34, 52, 0.08);
         border-radius: 16px;
         box-shadow: var(--shadow);
       }
@@ -73,11 +71,13 @@
 
       .topbar p {
         margin: 4px 0 0;
-        font-size: 12px;
         color: var(--muted);
+        font-size: 12px;
       }
 
       .chip {
+        display: inline-flex;
+        align-items: center;
         padding: 8px 12px;
         border-radius: 999px;
         background: var(--warn-soft);
@@ -90,12 +90,13 @@
 
       .content {
         display: grid;
-        grid-template-columns: 290px 1fr;
+        grid-template-columns: 300px 1fr;
         gap: 10px;
         align-items: start;
       }
 
-      .left-column {
+      .left-column,
+      .right-column {
         display: grid;
         gap: 10px;
       }
@@ -117,18 +118,28 @@
         font-size: 12px;
       }
 
-      .case-list {
+      .case-list,
+      .staff-list,
+      .doc-list {
         margin-top: 10px;
         display: grid;
         gap: 8px;
       }
 
-      .case-card {
-        width: 100%;
+      .case-card,
+      .staff-card,
+      .doc-card,
+      .note-card,
+      .digest-card,
+      .audit-card {
         border: 1px solid var(--line);
         border-radius: 14px;
-        padding: 12px;
         background: #fff;
+        padding: 12px;
+      }
+
+      .case-card {
+        width: 100%;
         display: grid;
         gap: 8px;
         text-align: left;
@@ -141,7 +152,9 @@
         box-shadow: inset 0 0 0 1px rgba(15, 108, 189, 0.18);
       }
 
-      .case-head {
+      .case-head,
+      .detail-head,
+      .doc-head {
         display: flex;
         justify-content: space-between;
         align-items: start;
@@ -154,14 +167,15 @@
         letter-spacing: -0.03em;
       }
 
-      .case-tag {
+      .case-tag,
+      .mini-tag {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 72px;
+        min-width: 74px;
         padding: 6px 8px;
         border-radius: 999px;
-        background: #eef5fb;
+        background: #edf5fd;
         color: var(--accent);
         font-size: 10px;
         font-weight: 700;
@@ -170,14 +184,19 @@
       }
 
       .case-card strong,
+      .staff-card strong,
+      .doc-card strong,
       .note-card strong,
-      .matrix-card strong {
+      .digest-card strong,
+      .audit-card strong {
         display: block;
         font-size: 13px;
       }
 
       .case-card span,
-      .matrix-card span {
+      .staff-card span,
+      .doc-card span,
+      .audit-card span {
         display: block;
         margin-top: 4px;
         color: var(--muted);
@@ -185,14 +204,12 @@
       }
 
       .note-card {
-        margin-top: 10px;
-        padding: 12px;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: linear-gradient(180deg, #f9fbfd 0%, #f1f7fb 100%);
+        background: linear-gradient(180deg, #f9fbfd 0%, #f2f7fb 100%);
       }
 
-      .note-card ul {
+      .note-card ul,
+      .digest-card ul,
+      .checklist {
         margin: 8px 0 0;
         padding-left: 18px;
         display: grid;
@@ -200,29 +217,9 @@
         font-size: 12px;
       }
 
-      .matrix-list {
-        margin-top: 10px;
-        display: grid;
-        gap: 8px;
-      }
-
-      .matrix-card {
-        padding: 12px;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: #fbfdff;
-      }
-
       .detail {
         padding: 14px;
         display: grid;
-        gap: 10px;
-      }
-
-      .detail-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
         gap: 10px;
       }
 
@@ -233,7 +230,7 @@
 
       .summary-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 8px;
       }
 
@@ -255,18 +252,34 @@
       .summary-card strong {
         display: block;
         margin-top: 6px;
-        font-size: 16px;
+        font-size: 15px;
+      }
+
+      .tab-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tab-row button {
+        border: 1px solid var(--line);
+        background: #f7fafc;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .tab-row button.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        color: var(--accent);
       }
 
       .workspace-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
-        gap: 10px;
-        align-items: start;
-      }
-
-      .stack {
-        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
         gap: 10px;
       }
 
@@ -288,23 +301,32 @@
         font-size: 12px;
       }
 
+      .module-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .two-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .map-surface {
         position: relative;
         margin-top: 10px;
-        height: 320px;
+        height: 332px;
         border-radius: 16px;
         border: 1px solid #cfe0ef;
         background:
           linear-gradient(180deg, #f9fcff 0%, #eef5fb 100%),
           repeating-linear-gradient(
             90deg,
-            transparent 0 63px,
-            rgba(15, 108, 189, 0.05) 63px 64px
+            transparent 0 59px,
+            rgba(15, 108, 189, 0.05) 59px 60px
           ),
           repeating-linear-gradient(
             0deg,
-            transparent 0 63px,
-            rgba(15, 108, 189, 0.05) 63px 64px
+            transparent 0 59px,
+            rgba(15, 108, 189, 0.05) 59px 60px
           );
         overflow: hidden;
       }
@@ -313,25 +335,25 @@
         position: absolute;
         border: 1px dashed rgba(15, 108, 189, 0.18);
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.36);
+        background: rgba(255, 255, 255, 0.34);
       }
 
-      .map-label {
-        position: absolute;
-        font-size: 11px;
-        color: var(--muted);
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
+      .map-label,
       .landmark-label {
         position: absolute;
         font-size: 11px;
-        color: #53677d;
         font-weight: 700;
-        letter-spacing: 0.02em;
         text-transform: uppercase;
+      }
+
+      .map-label {
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+
+      .landmark-label {
+        color: #50657b;
+        letter-spacing: 0.02em;
       }
 
       .pipe {
@@ -348,7 +370,6 @@
         color: var(--ink);
         font-size: 13px;
         font-weight: 800;
-        letter-spacing: 0.01em;
         cursor: pointer;
         box-shadow: 0 8px 16px rgba(16, 33, 50, 0.08);
       }
@@ -359,14 +380,10 @@
         color: var(--accent);
       }
 
-      .zone-button.relevant {
-        box-shadow: 0 0 0 2px rgba(181, 71, 8, 0.12);
-      }
-
       table {
         width: 100%;
-        border-collapse: collapse;
         margin-top: 10px;
+        border-collapse: collapse;
         font-size: 12px;
       }
 
@@ -380,16 +397,17 @@
 
       th {
         font-size: 11px;
+        color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: var(--muted);
       }
 
       tr.selected {
-        background: #f5faff;
+        background: #f4f9ff;
       }
 
-      .row-button {
+      .row-button,
+      .doc-button {
         border: 1px solid var(--line);
         border-radius: 10px;
         background: #f7fafc;
@@ -399,7 +417,8 @@
         cursor: pointer;
       }
 
-      .row-button.active {
+      .row-button.active,
+      .doc-button.active {
         border-color: var(--accent);
         background: var(--accent-soft);
         color: var(--accent);
@@ -471,21 +490,12 @@
         font-size: 12px;
         font-weight: 700;
         cursor: pointer;
-        min-height: 42px;
       }
 
       .segmented button.active {
         border-color: var(--accent);
         background: var(--accent-soft);
         color: var(--accent);
-      }
-
-      .checklist {
-        margin: 0;
-        padding-left: 18px;
-        display: grid;
-        gap: 6px;
-        font-size: 12px;
       }
 
       .checklist li.done {
@@ -526,13 +536,15 @@
         box-shadow: 0 10px 22px rgba(15, 108, 189, 0.24);
       }
 
-      @media (max-width: 1200px) {
-        .content {
+      @media (max-width: 1220px) {
+        .content,
+        .workspace-grid,
+        .module-grid.two-col {
           grid-template-columns: 1fr;
         }
 
-        .workspace-grid {
-          grid-template-columns: 1fr;
+        .summary-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
       }
     </style>
@@ -543,36 +555,43 @@
         <div>
           <h1>Ops Handoff Workspace</h1>
           <p>
-            Controlled long-horizon escalation workflow with spatial ambiguity,
-            evidence transfer, and packet repair checkpoints.
+            Long-horizon escalation workflow with protocol arbitration, topology
+            ambiguity, dense evidence archives, and revision tracking.
           </p>
         </div>
-        <div class="chip">Formative Study Build</div>
+        <div class="chip">Final Study Build</div>
       </section>
 
       <section class="content">
         <section class="left-column">
           <article class="panel panel-body">
             <h2>Case Queue</h2>
-            <p>Select the active case packet before reviewing the evidence.</p>
+            <p>
+              Open the packet you want to complete before navigating the
+              workspace tabs.
+            </p>
             <div class="case-list" id="case-list"></div>
           </article>
 
           <article class="panel panel-body">
-            <h2>Shift Notes</h2>
-            <p>Use the notes to resolve the mirrored-asset ambiguity.</p>
-            <div class="note-card">
-              <strong id="notes-title">Zone C handoff notes</strong>
-              <ul id="notes-list"></ul>
+            <h2>Protocol Digest</h2>
+            <p>
+              When handoff notes conflict, use the protocol rules to resolve the
+              packet target.
+            </p>
+            <div class="digest-card">
+              <strong id="digest-title">Zone C escalation protocol</strong>
+              <ul id="digest-list"></ul>
             </div>
           </article>
 
           <article class="panel panel-body">
-            <h2>Technician Availability</h2>
+            <h2>Certification Matrix</h2>
             <p>
-              Choose a technician certified for the zone and available today.
+              Select a technician who is certified for the active asset family
+              and available in the required window.
             </p>
-            <div class="matrix-list" id="technician-list"></div>
+            <div class="staff-list" id="staff-list"></div>
           </article>
         </section>
 
@@ -599,176 +618,76 @@
               <strong id="evidence-summary">0 rows</strong>
             </div>
             <div class="summary-card">
-              <span>Review Status</span>
+              <span>Attachment</span>
+              <strong id="attachment-summary">None</strong>
+            </div>
+            <div class="summary-card">
+              <span>Status</span>
               <strong id="review-summary">Draft</strong>
             </div>
           </div>
 
-          <div class="workspace-grid">
-            <div class="stack">
-              <section class="module">
-                <h3>Plant Map</h3>
-                <p>
-                  Resolve the mirrored target from the notes, then select the
-                  correct asset on the map.
-                </p>
-                <div class="map-surface">
-                  <div
-                    class="zone-frame"
-                    style="left: 24px; top: 46px; width: 356px; height: 208px"
-                  ></div>
-                  <div
-                    class="zone-frame"
-                    style="left: 402px; top: 34px; width: 176px; height: 238px"
-                  ></div>
-                  <div class="map-label" style="left: 18px; top: 16px">
-                    Zone C
-                  </div>
-                  <div class="map-label" style="left: 422px; top: 16px">
-                    Zone D
-                  </div>
-                  <div
-                    class="pipe"
-                    style="left: 72px; top: 74px; width: 250px; height: 12px"
-                  ></div>
-                  <div
-                    class="pipe"
-                    style="left: 180px; top: 86px; width: 12px; height: 136px"
-                  ></div>
-                  <div
-                    class="pipe"
-                    style="left: 334px; top: 146px; width: 92px; height: 12px"
-                  ></div>
-                  <div
-                    class="pipe"
-                    style="left: 484px; top: 78px; width: 12px; height: 158px"
-                  ></div>
-                  <button
-                    class="zone-button"
-                    id="zone-c-left"
-                    style="left: 54px; top: 112px; width: 132px; height: 70px"
-                    type="button"
-                  >
-                    C-17L
-                  </button>
-                  <button
-                    class="zone-button"
-                    id="zone-c-right"
-                    style="left: 214px; top: 112px; width: 132px; height: 70px"
-                    type="button"
-                  >
-                    C-17R
-                  </button>
-                  <button
-                    class="zone-button"
-                    id="zone-d-upper"
-                    style="left: 430px; top: 68px; width: 118px; height: 66px"
-                    type="button"
-                  >
-                    D-12A
-                  </button>
-                  <button
-                    class="zone-button"
-                    id="zone-d-lower"
-                    style="left: 430px; top: 172px; width: 118px; height: 66px"
-                    type="button"
-                  >
-                    D-12B
-                  </button>
-                  <div class="landmark-label" style="left: 86px; top: 90px">
-                    West branch
-                  </div>
-                  <div class="landmark-label" style="left: 246px; top: 90px">
-                    East branch
-                  </div>
-                  <div class="landmark-label" style="left: 443px; top: 46px">
-                    Upper return
-                  </div>
-                  <div class="landmark-label" style="left: 443px; top: 252px">
-                    Lower return
-                  </div>
-                  <div class="map-label" style="left: 112px; top: 214px">
-                    Inspection ladder
-                  </div>
-                  <div class="map-label" style="left: 414px; top: 286px">
-                    Yellow bypass rail
-                  </div>
-                </div>
-              </section>
+          <div class="tab-row" id="tab-row"></div>
 
-              <section class="module">
-                <h3>Escalation Checklist</h3>
+          <div class="workspace-grid">
+            <section class="right-column">
+              <div class="module" id="tab-content"></div>
+              <div class="module">
+                <h3>Packet Checklist</h3>
                 <p>
-                  Localized repair should preserve any progress already made.
+                  Use the plan, evidence, and protocol views together before you
+                  finalize the packet.
                 </p>
                 <ul class="checklist" id="progress-list"></ul>
-              </section>
-            </div>
+              </div>
+            </section>
 
-            <div class="stack">
-              <section class="module">
-                <h3>Sensor Evidence Table</h3>
-                <p>
-                  Confirm the anomaly code and transfer the matching evidence
-                  rows into the packet.
-                </p>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Row</th>
-                      <th>Asset</th>
-                      <th>Time</th>
-                      <th>Code</th>
-                      <th>Channel</th>
-                      <th>Confidence</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="evidence-body"></tbody>
-                </table>
-              </section>
+            <section class="module">
+              <h3>Packet Composer</h3>
+              <p>
+                Selections persist while you move across tabs. Attach the final
+                signed revision only.
+              </p>
 
-              <section class="module">
-                <h3>Escalation Packet</h3>
-                <p>
-                  Complete the packet after selecting the correct asset and
-                  evidence.
-                </p>
+              <div class="pill-row" id="selected-evidence"></div>
 
-                <div class="pill-row" id="selected-evidence"></div>
-
-                <div class="control-grid">
-                  <div class="field-group">
-                    <label>Anomaly Code</label>
-                    <div class="segmented four" id="code-buttons"></div>
-                  </div>
-                  <div class="field-group">
-                    <label>Assigned Technician</label>
-                    <div class="segmented three" id="assignee-buttons"></div>
-                  </div>
-                  <div class="field-group">
-                    <label>Inspection Slot</label>
-                    <div class="segmented four" id="slot-buttons"></div>
-                  </div>
-                  <div class="field-group">
-                    <label>Packet Attachment</label>
-                    <div class="segmented three" id="report-buttons"></div>
-                  </div>
-                  <div class="field-group full">
-                    <label>Review Status</label>
-                    <div class="segmented two" id="review-buttons"></div>
+              <div class="control-grid">
+                <div class="field-group">
+                  <label>Anomaly Code</label>
+                  <div class="segmented four" id="code-buttons"></div>
+                </div>
+                <div class="field-group">
+                  <label>Assigned Technician</label>
+                  <div class="segmented four" id="assignee-buttons"></div>
+                </div>
+                <div class="field-group">
+                  <label>Inspection Slot</label>
+                  <div class="segmented four" id="slot-buttons"></div>
+                </div>
+                <div class="field-group">
+                  <label>Review Status</label>
+                  <div class="segmented two" id="review-buttons"></div>
+                </div>
+                <div class="field-group full">
+                  <label>Packet Audit</label>
+                  <div class="audit-card">
+                    <strong id="audit-title">Packet audit banner</strong>
+                    <span id="audit-copy"
+                      >No packet has been committed yet.</span
+                    >
                   </div>
                 </div>
-              </section>
-            </div>
+              </div>
+            </section>
           </div>
 
           <div class="banner">
             <div>
               <h3>Packet Banner</h3>
               <p id="save-message">
-                Resolve the target asset, transfer the correct evidence, and
-                commit the escalation packet.
+                Resolve the target asset, collect the correct evidence rows,
+                attach the final signed revision, and commit the escalation
+                packet.
               </p>
             </div>
             <button class="save-btn" id="save-button" type="button">
@@ -780,27 +699,36 @@
     </div>
 
     <script>
+      const tabs = ["Topology", "Evidence Archive", "Document Repository"];
+
       const technicians = [
         {
           name: "Alex Kim",
-          certification: "Zone C cooling loops",
-          availability: "Today 4:30 PM",
-          summary:
-            "Certified for mirrored coolant branches and manifold checks.",
+          certification: "Zone C west-branch cooling loops",
+          assetGroups: ["C-17L", "C-17R"],
+          slot: "Today 4:30 PM",
+          note: "Certified for west/east coolant branch arbitration and manifold checks.",
         },
         {
           name: "Priya Singh",
-          certification: "Zone D return pumps",
-          availability: "Today 2:30 PM",
-          summary:
-            "Certified for pump recovery packets and bypass diagnostics.",
+          certification: "Zone D upper-return pumps",
+          assetGroups: ["D-12A"],
+          slot: "Today 2:30 PM",
+          note: "Certified for upper-return pump packets and restart jitter analysis.",
+        },
+        {
+          name: "Jordan Alvarez",
+          certification: "Zone D lower-return pumps",
+          assetGroups: ["D-12B"],
+          slot: "Today 5:00 PM",
+          note: "Certified for lower-return pump isolation and bypass bleed checks.",
         },
         {
           name: "Morgan Patel",
-          certification: "General mechanical",
-          availability: "Tomorrow 9:00 AM",
-          summary:
-            "Available next day only and not zone-specialized for these cases.",
+          certification: "General mechanical support",
+          assetGroups: [],
+          slot: "Tomorrow 9:00 AM",
+          note: "Not certified for mirrored branch arbitration cases.",
         },
       ];
 
@@ -814,18 +742,41 @@
           targetAsset: "C-17L",
           mirroredAsset: "C-17R",
           targetCode: "HX-44",
-          evidenceTargets: ["EV-882", "EV-901"],
+          evidenceTargets: ["EV-882", "EV-901", "EV-905"],
           assignee: "Alex Kim",
           slot: "Today 4:30 PM",
-          report: "Cooling Loop Packet",
-          noteTitle: "Zone C handoff notes",
-          notes: [
-            "The target unit is on the west branch, immediately left of the inspection ladder.",
-            "Do not use the mirrored east-branch unit even if it shows the same anomaly code.",
-            "Use the evidence rows from the 08:10-08:20 window on the west return channels only.",
+          report: "Cooling Loop Packet Rev 3 Signed",
+          noteBlocks: [
+            {
+              title: "Morning Handoff",
+              bullets: [
+                "QA reported the active branch is left of the inspection ladder on the west manifold.",
+                "The coolant spike started during the 08:10-08:20 review window.",
+                "Do not rely on the mirrored branch alias alone because both branches inherited the same HX tag last week.",
+              ],
+            },
+            {
+              title: "Evening Addendum",
+              bullets: [
+                "Yesterday's east-branch cleanup ticket reused the C-17 family label and should not be reopened unless East channels exceed the time window.",
+                "The current packet still belongs to the west branch unless protocol arbitration says otherwise.",
+              ],
+            },
           ],
-          summary: "Resolve C-17L vs C-17R before preparing the packet.",
-          queueHint: "Spatial ambiguity on mirrored coolant branches.",
+          digestTitle: "Zone C escalation protocol",
+          digestRules: [
+            "When morning and evening notes conflict, prioritize the physical landmark cue before the reused branch alias.",
+            "For CASE-201, valid evidence rows must be inside the 08:10-08:20 window and on west-return channels only.",
+            "Attach the highest signed Cooling Loop Packet revision that explicitly covers the west branch.",
+          ],
+          queueHint: "Mirrored branch ambiguity plus reused HX labels.",
+          topologyLabels: {
+            region: "Zone C coolant branches",
+            leftHint: "West branch",
+            rightHint: "East branch",
+            upperHint: "Holding manifold",
+            lowerHint: "Inspection ladder",
+          },
           evidenceRows: [
             {
               id: "EV-882",
@@ -838,9 +789,17 @@
             {
               id: "EV-901",
               asset: "C-17L",
-              time: "08:19",
+              time: "08:16",
               code: "HX-44",
               channel: "West-B",
+              confidence: "High",
+            },
+            {
+              id: "EV-905",
+              asset: "C-17L",
+              time: "08:19",
+              code: "HX-44",
+              channel: "West-C",
               confidence: "High",
             },
             {
@@ -854,12 +813,55 @@
             {
               id: "EV-914",
               asset: "C-17R",
-              time: "08:22",
+              time: "08:17",
               code: "HX-44",
               channel: "East-B",
               confidence: "High",
             },
+            {
+              id: "EV-918",
+              asset: "C-17R",
+              time: "08:23",
+              code: "HX-44",
+              channel: "East-C",
+              confidence: "High",
+            },
+            {
+              id: "EV-876",
+              asset: "C-17L",
+              time: "08:05",
+              code: "HX-41",
+              channel: "West-A",
+              confidence: "Medium",
+            },
           ],
+          documents: [
+            {
+              title: "Cooling Loop Packet Rev 1 Draft",
+              scope: "All C-17 branches",
+              status: "Draft",
+              signed: "No",
+            },
+            {
+              title: "Cooling Loop Packet Rev 2 Signed",
+              scope: "East branch only",
+              status: "Signed",
+              signed: "Yes",
+            },
+            {
+              title: "Cooling Loop Packet Rev 3 Signed",
+              scope: "West branch escalation",
+              status: "Signed",
+              signed: "Yes",
+            },
+            {
+              title: "Cooling Loop Packet Rev 3 Annotated",
+              scope: "Review markup copy",
+              status: "Markup",
+              signed: "No",
+            },
+          ],
+          altIntent: null,
         },
         {
           id: "CASE-318",
@@ -870,18 +872,42 @@
           targetAsset: "D-12A",
           mirroredAsset: "D-12B",
           targetCode: "VP-09",
-          evidenceTargets: ["EV-417", "EV-433"],
+          evidenceTargets: ["EV-417", "EV-433", "EV-441"],
           assignee: "Priya Singh",
           slot: "Today 2:30 PM",
-          report: "Pump Recovery Packet",
-          noteTitle: "Zone D handoff notes",
-          notes: [
-            "The target pump is on the upper return branch above the yellow bypass rail.",
-            "Ignore the mirrored lower-branch pump even if its anomaly code also reads VP-09.",
-            "Use the evidence rows captured after 09:00 on the upper return channels only.",
+          report: "Pump Recovery Packet Rev 4 Signed",
+          noteBlocks: [
+            {
+              title: "Morning Handoff",
+              bullets: [
+                "The active target sits on the upper return branch above the yellow bypass rail.",
+                "Use evidence rows recorded after 09:00 on upper-return channels only.",
+                "The mirrored lower-return pump reused the same VP-09 code during yesterday's validation cycle.",
+              ],
+            },
+            {
+              title: "Evening Addendum",
+              bullets: [
+                "If operations later redirects the packet to the lower return branch, switch to the lower-return evidence family and certified technician.",
+                "Do not keep the upper-return attachment if the packet is reassigned to D-12B.",
+              ],
+            },
           ],
-          summary: "Resolve D-12A vs D-12B before preparing the packet.",
-          queueHint: "Upper vs lower return branch ambiguity.",
+          digestTitle: "Zone D escalation protocol",
+          digestRules: [
+            "Choose the branch whose physical position matches the rail landmark before trusting the mirrored D-12 label.",
+            "For D-12A, use upper-return evidence rows after 09:00. For a later redirect to D-12B, use lower-return rows after 09:10 instead.",
+            "Attach the latest signed packet revision whose scope matches the final selected branch.",
+          ],
+          queueHint:
+            "Upper vs lower branch ambiguity with later redirect support.",
+          topologyLabels: {
+            region: "Zone D return pumps",
+            leftHint: "Bypass rail",
+            rightHint: "Return pumps",
+            upperHint: "Upper return",
+            lowerHint: "Lower return",
+          },
           evidenceRows: [
             {
               id: "EV-417",
@@ -894,15 +920,23 @@
             {
               id: "EV-433",
               asset: "D-12A",
-              time: "09:11",
+              time: "09:08",
               code: "VP-09",
               channel: "Upper-B",
               confidence: "High",
             },
             {
+              id: "EV-441",
+              asset: "D-12A",
+              time: "09:15",
+              code: "VP-09",
+              channel: "Upper-C",
+              confidence: "High",
+            },
+            {
               id: "EV-425",
               asset: "D-12B",
-              time: "08:56",
+              time: "09:11",
               code: "VP-09",
               channel: "Lower-A",
               confidence: "High",
@@ -910,55 +944,102 @@
             {
               id: "EV-439",
               asset: "D-12B",
-              time: "09:17",
+              time: "09:14",
               code: "VP-09",
               channel: "Lower-B",
               confidence: "High",
             },
+            {
+              id: "EV-447",
+              asset: "D-12B",
+              time: "09:18",
+              code: "VP-09",
+              channel: "Lower-C",
+              confidence: "High",
+            },
+            {
+              id: "EV-403",
+              asset: "D-12A",
+              time: "08:52",
+              code: "VP-12",
+              channel: "Upper-A",
+              confidence: "Medium",
+            },
           ],
+          documents: [
+            {
+              title: "Pump Recovery Packet Rev 2 Signed",
+              scope: "Legacy D-12 set",
+              status: "Signed",
+              signed: "Yes",
+            },
+            {
+              title: "Pump Recovery Packet Rev 4 Signed",
+              scope: "Upper return packet",
+              status: "Signed",
+              signed: "Yes",
+            },
+            {
+              title: "Pump Recovery Packet Rev 4 Lower Return Signed",
+              scope: "Lower return packet",
+              status: "Signed",
+              signed: "Yes",
+            },
+            {
+              title: "Pump Recovery Packet Rev 4 Annotated",
+              scope: "Markup copy",
+              status: "Markup",
+              signed: "No",
+            },
+          ],
+          altIntent: {
+            targetAsset: "D-12B",
+            evidenceTargets: ["EV-425", "EV-439", "EV-447"],
+            assignee: "Jordan Alvarez",
+            slot: "Today 5:00 PM",
+            report: "Pump Recovery Packet Rev 4 Lower Return Signed",
+          },
         },
       ];
 
       const anomalyCodes = ["HX-41", "HX-44", "VP-09", "VP-12"];
-      const assignees = ["Alex Kim", "Priya Singh", "Morgan Patel"];
+      const assignees = [
+        "Alex Kim",
+        "Priya Singh",
+        "Jordan Alvarez",
+        "Morgan Patel",
+      ];
       const slots = [
         "Today 1:30 PM",
         "Today 2:30 PM",
         "Today 4:30 PM",
+        "Today 5:00 PM",
         "Tomorrow 9:00 AM",
       ];
-      const reports = [
-        "Cooling Loop Packet",
-        "Pump Recovery Packet",
-        "Bypass Check Memo",
-      ];
       const reviewStates = ["Draft", "Ready for review"];
-      const mapButtons = {
-        "C-17L": document.getElementById("zone-c-left"),
-        "C-17R": document.getElementById("zone-c-right"),
-        "D-12A": document.getElementById("zone-d-upper"),
-        "D-12B": document.getElementById("zone-d-lower"),
-      };
 
       const caseList = document.getElementById("case-list");
-      const notesTitle = document.getElementById("notes-title");
-      const notesList = document.getElementById("notes-list");
-      const technicianList = document.getElementById("technician-list");
+      const digestTitle = document.getElementById("digest-title");
+      const digestList = document.getElementById("digest-list");
+      const staffList = document.getElementById("staff-list");
       const detailTitle = document.getElementById("detail-title");
       const detailSubtitle = document.getElementById("detail-subtitle");
       const recordId = document.getElementById("record-id");
       const assetSummary = document.getElementById("asset-summary");
       const codeSummary = document.getElementById("code-summary");
       const evidenceSummary = document.getElementById("evidence-summary");
+      const attachmentSummary = document.getElementById("attachment-summary");
       const reviewSummary = document.getElementById("review-summary");
-      const evidenceBody = document.getElementById("evidence-body");
+      const tabRow = document.getElementById("tab-row");
+      const tabContent = document.getElementById("tab-content");
+      const progressList = document.getElementById("progress-list");
       const selectedEvidence = document.getElementById("selected-evidence");
       const codeButtons = document.getElementById("code-buttons");
       const assigneeButtons = document.getElementById("assignee-buttons");
       const slotButtons = document.getElementById("slot-buttons");
-      const reportButtons = document.getElementById("report-buttons");
       const reviewButtons = document.getElementById("review-buttons");
-      const progressList = document.getElementById("progress-list");
+      const auditTitle = document.getElementById("audit-title");
+      const auditCopy = document.getElementById("audit-copy");
       const saveButton = document.getElementById("save-button");
       const saveMessage = document.getElementById("save-message");
 
@@ -966,6 +1047,7 @@
         cases.map((item) => [
           item.id,
           {
+            activeTab: "Topology",
             selectedAsset: "",
             anomalyCode: "",
             evidenceSelection: [],
@@ -1009,14 +1091,6 @@
         });
       }
 
-      function toggleEvidenceRow(rowId) {
-        const taskState = currentState();
-        const next = taskState.evidenceSelection.includes(rowId)
-          ? taskState.evidenceSelection.filter((item) => item !== rowId)
-          : [...taskState.evidenceSelection, rowId];
-        taskState.evidenceSelection = next.slice(0, 3);
-      }
-
       function renderCaseQueue() {
         caseList.innerHTML = "";
         cases.forEach((item) => {
@@ -1035,52 +1109,219 @@
           button.addEventListener("click", () => {
             selectedCaseId = item.id;
             saveMessage.textContent =
-              "Resolve the target asset, transfer the correct evidence, and commit the escalation packet.";
+              "Resolve the target asset, collect the correct evidence rows, attach the final signed revision, and commit the escalation packet.";
             render();
           });
           caseList.appendChild(button);
         });
       }
 
-      function renderNotes() {
+      function renderProtocol() {
         const item = currentCase();
-        notesTitle.textContent = item.noteTitle;
-        notesList.innerHTML = "";
-        item.notes.forEach((note) => {
+        digestTitle.textContent = item.digestTitle;
+        digestList.innerHTML = "";
+        item.digestRules.forEach((rule) => {
           const li = document.createElement("li");
-          li.textContent = note;
-          notesList.appendChild(li);
+          li.textContent = rule;
+          digestList.appendChild(li);
         });
       }
 
-      function renderTechnicians() {
+      function renderStaff() {
         const item = currentCase();
-        technicianList.innerHTML = "";
+        staffList.innerHTML = "";
         technicians.forEach((tech) => {
           const div = document.createElement("div");
-          div.className = "matrix-card";
+          div.className = "staff-card";
+          const relevant =
+            tech.assetGroups.includes(item.targetAsset) ||
+            tech.assetGroups.includes(item.mirroredAsset);
           div.innerHTML = `
-            <strong>${tech.name}</strong>
+            <div class="doc-head">
+              <strong>${tech.name}</strong>
+              <div class="mini-tag">${relevant ? "Relevant" : "General"}</div>
+            </div>
             <span>${tech.certification}</span>
-            <span>Availability: ${tech.availability}</span>
-            <span>${tech.summary}</span>
+            <span>Availability: ${tech.slot}</span>
+            <span>${tech.note}</span>
           `;
-          if (tech.name === item.assignee) {
-            div.style.borderColor = "#0f6cbd";
-            div.style.background = "#eef6ff";
-          }
-          technicianList.appendChild(div);
+          staffList.appendChild(div);
         });
       }
 
-      function renderMap() {
+      function selectAsset(asset) {
+        currentState().selectedAsset = asset;
+        render();
+      }
+
+      function toggleEvidenceRow(rowId) {
+        const taskState = currentState();
+        const next = taskState.evidenceSelection.includes(rowId)
+          ? taskState.evidenceSelection.filter((item) => item !== rowId)
+          : [...taskState.evidenceSelection, rowId];
+        taskState.evidenceSelection = next.slice(0, 4);
+      }
+
+      function attachDocument(title) {
+        currentState().report = title;
+        render();
+      }
+
+      function renderTabs() {
+        const taskState = currentState();
+        tabRow.innerHTML = "";
+        tabs.forEach((tab) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = tab;
+          button.className = taskState.activeTab === tab ? "active" : "";
+          button.addEventListener("click", () => {
+            taskState.activeTab = tab;
+            render();
+          });
+          tabRow.appendChild(button);
+        });
+      }
+
+      function topologyMarkup(item, taskState) {
+        const noteCards = item.noteBlocks
+          .map(
+            (block) => `
+              <div class="note-card">
+                <strong>${block.title}</strong>
+                <ul>${block.bullets.map((bullet) => `<li>${bullet}</li>`).join("")}</ul>
+              </div>
+            `,
+          )
+          .join("");
+
+        return `
+          <div class="module-grid two-col">
+            <div>
+              ${noteCards}
+            </div>
+            <div class="module">
+              <h3>Topology Map</h3>
+              <p>Choose the active asset after reconciling notes, protocol rules, and physical landmarks.</p>
+              <div class="map-surface">
+                <div class="zone-frame" style="left: 24px; top: 52px; width: 362px; height: 214px"></div>
+                <div class="zone-frame" style="left: 404px; top: 40px; width: 176px; height: 244px"></div>
+                <div class="map-label" style="left: 18px; top: 18px">${item.zone}</div>
+                <div class="map-label" style="left: 404px; top: 18px">${item.topologyLabels.region}</div>
+                <div class="pipe" style="left: 76px; top: 84px; width: 248px; height: 12px"></div>
+                <div class="pipe" style="left: 178px; top: 96px; width: 12px; height: 136px"></div>
+                <div class="pipe" style="left: 332px; top: 150px; width: 92px; height: 12px"></div>
+                <div class="pipe" style="left: 486px; top: 84px; width: 12px; height: 160px"></div>
+                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 52px; top: 122px; width: 132px; height: 70px" type="button" data-asset="C-17L">C-17L</button>
+                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 214px; top: 122px; width: 132px; height: 70px" type="button" data-asset="C-17R">C-17R</button>
+                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 434px; top: 80px; width: 118px; height: 66px" type="button" data-asset="D-12A">D-12A</button>
+                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 434px; top: 186px; width: 118px; height: 66px" type="button" data-asset="D-12B">D-12B</button>
+                <div class="landmark-label" style="left: 84px; top: 100px">${item.topologyLabels.leftHint}</div>
+                <div class="landmark-label" style="left: 246px; top: 100px">${item.topologyLabels.rightHint}</div>
+                <div class="landmark-label" style="left: 438px; top: 58px">${item.topologyLabels.upperHint}</div>
+                <div class="landmark-label" style="left: 438px; top: 266px">${item.topologyLabels.lowerHint}</div>
+                <div class="map-label" style="left: 102px; top: 224px">Inspection ladder</div>
+                <div class="map-label" style="left: 410px; top: 294px">Yellow bypass rail</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function evidenceMarkup(item, taskState) {
+        return `
+          <h3>Evidence Archive</h3>
+          <p>Dense archive view. Use time window, channel, and asset scope together rather than anomaly code alone.</p>
+          <div class="pill-row">
+            <div class="pill">Archive page 2 of 3</div>
+            <div class="pill">Rows sorted by confidence</div>
+            <div class="pill">Alias reuse present</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Row</th>
+                <th>Asset</th>
+                <th>Time</th>
+                <th>Code</th>
+                <th>Channel</th>
+                <th>Confidence</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${item.evidenceRows
+                .map((row) => {
+                  const selected = taskState.evidenceSelection.includes(row.id);
+                  return `
+                    <tr class="${selected ? "selected" : ""}">
+                      <td>${row.id}</td>
+                      <td>${row.asset}</td>
+                      <td>${row.time}</td>
+                      <td>${row.code}</td>
+                      <td>${row.channel}</td>
+                      <td>${row.confidence}</td>
+                      <td><button class="row-button ${selected ? "active" : ""}" type="button" data-row="${row.id}">${selected ? "Added" : "Add"}</button></td>
+                    </tr>
+                  `;
+                })
+                .join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      function documentMarkup(item, taskState) {
+        return `
+          <h3>Document Repository</h3>
+          <p>Several revisions are visually similar. Attach only the latest signed document whose scope matches the final branch.</p>
+          <div class="doc-list">
+            ${item.documents
+              .map((doc) => {
+                const active = taskState.report === doc.title;
+                return `
+                  <div class="doc-card">
+                    <div class="doc-head">
+                      <strong>${doc.title}</strong>
+                      <div class="mini-tag">${doc.status}</div>
+                    </div>
+                    <span>Scope: ${doc.scope}</span>
+                    <span>Signed: ${doc.signed}</span>
+                    <button class="doc-button ${active ? "active" : ""}" type="button" data-doc="${doc.title}">${active ? "Attached" : "Attach"}</button>
+                  </div>
+                `;
+              })
+              .join("")}
+          </div>
+        `;
+      }
+
+      function renderTabContent() {
         const item = currentCase();
         const taskState = currentState();
-        Object.entries(mapButtons).forEach(([asset, button]) => {
-          button.classList.toggle("active", taskState.selectedAsset === asset);
-          button.classList.toggle(
-            "relevant",
-            asset === item.targetAsset || asset === item.mirroredAsset,
+        if (taskState.activeTab === "Topology") {
+          tabContent.innerHTML = topologyMarkup(item, taskState);
+          tabContent.querySelectorAll("[data-asset]").forEach((button) => {
+            button.addEventListener("click", () =>
+              selectAsset(button.dataset.asset),
+            );
+          });
+          return;
+        }
+        if (taskState.activeTab === "Evidence Archive") {
+          tabContent.innerHTML = evidenceMarkup(item, taskState);
+          tabContent.querySelectorAll("[data-row]").forEach((button) => {
+            button.addEventListener("click", () => {
+              toggleEvidenceRow(button.dataset.row);
+              render();
+            });
+          });
+          return;
+        }
+        tabContent.innerHTML = documentMarkup(item, taskState);
+        tabContent.querySelectorAll("[data-doc]").forEach((button) => {
+          button.addEventListener("click", () =>
+            attachDocument(button.dataset.doc),
           );
         });
       }
@@ -1103,19 +1344,19 @@
             done: taskState.anomalyCode === item.targetCode,
           },
           {
-            label: `Evidence rows transferred (${item.evidenceTargets.join(", ")})`,
+            label: `Evidence archive rows transferred (${item.evidenceTargets.join(", ")})`,
             done: evidenceDone,
           },
           {
-            label: `Technician assigned (${item.assignee})`,
+            label: `Certified technician assigned (${item.assignee})`,
             done: taskState.assignee === item.assignee,
           },
           {
-            label: `Same-day slot selected (${item.slot})`,
+            label: `Correct slot chosen (${item.slot})`,
             done: taskState.slot === item.slot,
           },
           {
-            label: `Correct packet attached (${item.report})`,
+            label: `Latest signed revision attached (${item.report})`,
             done: taskState.report === item.report,
           },
           {
@@ -1125,49 +1366,34 @@
         ];
       }
 
-      function renderEvidence() {
-        const item = currentCase();
-        const taskState = currentState();
-        evidenceBody.innerHTML = "";
-        item.evidenceRows.forEach((row) => {
-          const tr = document.createElement("tr");
-          const selected = taskState.evidenceSelection.includes(row.id);
-          if (selected) tr.classList.add("selected");
-          tr.innerHTML = `
-            <td>${row.id}</td>
-            <td>${row.asset}</td>
-            <td>${row.time}</td>
-            <td>${row.code}</td>
-            <td>${row.channel}</td>
-            <td>${row.confidence}</td>
-            <td><button class="row-button${selected ? " active" : ""}" type="button">${selected ? "Added" : "Add"}</button></td>
-          `;
-          tr.querySelector("button").addEventListener("click", () => {
-            toggleEvidenceRow(row.id);
-            render();
-          });
-          evidenceBody.appendChild(tr);
+      function renderChecklist() {
+        progressList.innerHTML = "";
+        buildChecklist().forEach((step) => {
+          const li = document.createElement("li");
+          li.textContent = `${step.done ? "✓" : "○"} ${step.label}`;
+          if (step.done) li.classList.add("done");
+          progressList.appendChild(li);
         });
       }
 
-      function renderPacket() {
+      function renderSummaryAndControls() {
         const item = currentCase();
         const taskState = currentState();
-
         detailTitle.textContent = item.id;
         detailSubtitle.textContent = item.subtitle;
         recordId.textContent = `Packet ${item.packet}`;
         assetSummary.textContent = taskState.selectedAsset || "Unselected";
         codeSummary.textContent = taskState.anomalyCode || "Unconfirmed";
         evidenceSummary.textContent = `${taskState.evidenceSelection.length} rows`;
+        attachmentSummary.textContent = taskState.report || "None";
         reviewSummary.textContent = taskState.review;
 
         selectedEvidence.innerHTML = "";
         if (taskState.evidenceSelection.length === 0) {
-          const placeholder = document.createElement("div");
-          placeholder.className = "pill";
-          placeholder.textContent = "No evidence rows added";
-          selectedEvidence.appendChild(placeholder);
+          const pill = document.createElement("div");
+          pill.className = "pill";
+          pill.textContent = "No evidence rows selected";
+          selectedEvidence.appendChild(pill);
         } else {
           taskState.evidenceSelection.forEach((rowId) => {
             const pill = document.createElement("div");
@@ -1176,14 +1402,6 @@
             selectedEvidence.appendChild(pill);
           });
         }
-
-        progressList.innerHTML = "";
-        buildChecklist().forEach((step) => {
-          const li = document.createElement("li");
-          li.textContent = `${step.done ? "✓" : "○"} ${step.label}`;
-          if (step.done) li.classList.add("done");
-          progressList.appendChild(li);
-        });
 
         renderButtons(
           codeButtons,
@@ -1202,7 +1420,7 @@
           (value) => {
             taskState.assignee = value;
           },
-          "segmented three",
+          "segmented four",
         );
 
         renderButtons(
@@ -1216,16 +1434,6 @@
         );
 
         renderButtons(
-          reportButtons,
-          reports,
-          taskState.report,
-          (value) => {
-            taskState.report = value;
-          },
-          "segmented three",
-        );
-
-        renderButtons(
           reviewButtons,
           reviewStates,
           taskState.review,
@@ -1234,28 +1442,27 @@
           },
           "segmented two",
         );
-      }
 
-      Object.entries(mapButtons).forEach(([asset, button]) => {
-        button.addEventListener("click", () => {
-          currentState().selectedAsset = asset;
-          render();
-        });
-      });
+        auditTitle.textContent = `Audit for ${item.id}`;
+        auditCopy.textContent = item.altIntent
+          ? `Current final-state target: ${item.targetAsset}. This case also supports a later redirect to ${item.altIntent.targetAsset} with different evidence rows, technician, slot, and signed revision.`
+          : "Current final-state target: C-17L. The packet should only use west-branch evidence and the west-branch signed revision.";
+      }
 
       saveButton.addEventListener("click", () => {
         const item = currentCase();
         const taskState = currentState();
-        saveMessage.textContent = `Saved ${item.id}: asset ${taskState.selectedAsset || "none"}, code ${taskState.anomalyCode || "none"}, evidence ${taskState.evidenceSelection.join(", ") || "none"}, technician ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, packet ${taskState.report || "none"}, status ${taskState.review}.`;
+        saveMessage.textContent = `Saved ${item.id}: asset ${taskState.selectedAsset || "none"}, code ${taskState.anomalyCode || "none"}, evidence ${taskState.evidenceSelection.join(", ") || "none"}, technician ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, attachment ${taskState.report || "none"}, status ${taskState.review}.`;
       });
 
       function render() {
         renderCaseQueue();
-        renderNotes();
-        renderTechnicians();
-        renderMap();
-        renderEvidence();
-        renderPacket();
+        renderProtocol();
+        renderStaff();
+        renderTabs();
+        renderTabContent();
+        renderSummaryAndControls();
+        renderChecklist();
       }
 
       render();
