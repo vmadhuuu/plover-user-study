@@ -430,6 +430,51 @@
         color: var(--accent);
       }
 
+      .archive-meta {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .archive-count {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .filter-toolbar {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .filter-group {
+        display: grid;
+        gap: 5px;
+      }
+
+      .filter-group label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .filter-group select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px 10px;
+        background: #f8fbfd;
+        color: var(--ink);
+        font-size: 12px;
+      }
+
       .pill-row {
         display: flex;
         flex-wrap: wrap;
@@ -509,6 +554,23 @@
         font-weight: 600;
       }
 
+      .doc-card {
+        display: grid;
+        gap: 8px;
+      }
+
+      .preview-blurb {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .doc-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
       .banner {
         border: 1px solid var(--line);
         border-radius: 16px;
@@ -542,6 +604,133 @@
         box-shadow: 0 10px 22px rgba(15, 108, 189, 0.24);
       }
 
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 22px;
+        background: rgba(9, 24, 38, 0.42);
+        backdrop-filter: blur(4px);
+        z-index: 40;
+      }
+
+      .modal-backdrop.open {
+        display: flex;
+      }
+
+      .modal-card {
+        width: min(760px, 100%);
+        max-height: calc(100vh - 44px);
+        overflow-y: auto;
+        border: 1px solid rgba(17, 34, 52, 0.12);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 24px 60px rgba(18, 38, 63, 0.22);
+        padding: 18px;
+      }
+
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .modal-head h3 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: -0.03em;
+      }
+
+      .modal-head p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .modal-close {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #f7fafc;
+        color: var(--ink);
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .preview-meta {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .preview-meta-card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #f8fbfd;
+        padding: 10px;
+      }
+
+      .preview-meta-card span {
+        display: block;
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .preview-meta-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 14px;
+      }
+
+      .preview-shell {
+        margin-top: 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: linear-gradient(180deg, #fbfdff 0%, #eef4fa 100%);
+        padding: 16px;
+      }
+
+      .preview-page {
+        border: 1px solid #d8e4ef;
+        border-radius: 16px;
+        background: #fff;
+        padding: 16px;
+        box-shadow: inset 0 0 0 1px rgba(15, 108, 189, 0.04);
+      }
+
+      .preview-page h4 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .preview-page p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .preview-page ul {
+        margin: 12px 0 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        font-size: 12px;
+      }
+
+      .modal-actions {
+        margin-top: 16px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
       @media (max-width: 1220px) {
         .content,
         .workspace-grid,
@@ -551,6 +740,11 @@
 
         .summary-grid {
           grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filter-toolbar,
+        .preview-meta {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -704,6 +898,53 @@
       </section>
     </div>
 
+    <div class="modal-backdrop" id="doc-modal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <h3 id="modal-title">Document preview</h3>
+            <p id="modal-subtitle">
+              Inspect the revision before attaching it to the packet.
+            </p>
+          </div>
+          <button class="modal-close" id="modal-close-button" type="button">
+            Close
+          </button>
+        </div>
+
+        <div class="preview-meta">
+          <div class="preview-meta-card">
+            <span>Status</span>
+            <strong id="modal-status">Unopened</strong>
+          </div>
+          <div class="preview-meta-card">
+            <span>Scope</span>
+            <strong id="modal-scope">No document selected</strong>
+          </div>
+          <div class="preview-meta-card">
+            <span>Signed</span>
+            <strong id="modal-signed">Unknown</strong>
+          </div>
+        </div>
+
+        <div class="preview-shell">
+          <div class="preview-page">
+            <h4 id="modal-preview-title">Preview page</h4>
+            <p id="modal-preview-copy">
+              Select a document from the repository to open a revision preview.
+            </p>
+            <ul id="modal-preview-list"></ul>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="doc-button" id="modal-attach-button" type="button">
+            Attach to Packet
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const tabs = ["Topology", "Evidence Archive", "Document Repository"];
 
@@ -847,24 +1088,44 @@
               scope: "All C-17 branches",
               status: "Draft",
               signed: "No",
+              notes: [
+                "Older branch-agnostic draft that still references both mirrored coolant paths.",
+                "Lacks the signed west-branch escalation approval block.",
+                "Useful for comparison, but not valid for final packet attachment.",
+              ],
             },
             {
               title: "Cooling Loop Packet Rev 2 Signed",
               scope: "East branch only",
               status: "Signed",
               signed: "Yes",
+              notes: [
+                "Signed revision, but scoped to the mirrored east branch.",
+                "Retains the reused HX alias that conflicts with the handoff landmark cue.",
+                "Should not be attached when the packet resolves to C-17L.",
+              ],
             },
             {
               title: "Cooling Loop Packet Rev 3 Signed",
               scope: "West branch escalation",
               status: "Signed",
               signed: "Yes",
+              notes: [
+                "Latest signed revision whose scope explicitly matches the west branch escalation.",
+                "Revision body references the inspection ladder landmark and the 08:10-08:20 window.",
+                "This is the correct final attachment for CASE-201.",
+              ],
             },
             {
               title: "Cooling Loop Packet Rev 3 Annotated",
               scope: "Review markup copy",
               status: "Markup",
               signed: "No",
+              notes: [
+                "Annotated reviewer copy with comments and markup overlays.",
+                "Contains the correct branch discussion, but is not a signed deliverable.",
+                "Should be previewed, not attached as the final packet revision.",
+              ],
             },
           ],
           altIntent: null,
@@ -978,24 +1239,44 @@
               scope: "Legacy D-12 set",
               status: "Signed",
               signed: "Yes",
+              notes: [
+                "Older signed packet spanning both mirrored return paths.",
+                "Still references the legacy combined topology and should not be used for final arbitration.",
+                "Included to make revision search less trivial.",
+              ],
             },
             {
               title: "Pump Recovery Packet Rev 4 Signed",
               scope: "Upper return packet",
               status: "Signed",
               signed: "Yes",
+              notes: [
+                "Latest signed packet for the upper-return branch and initial CASE-318 target.",
+                "Matches D-12A, upper-return evidence rows, and Priya Singh's certification.",
+                "Valid unless the user later redirects the packet to D-12B.",
+              ],
             },
             {
               title: "Pump Recovery Packet Rev 4 Lower Return Signed",
               scope: "Lower return packet",
               status: "Signed",
               signed: "Yes",
+              notes: [
+                "Alternate signed packet for the lower-return redirect path.",
+                "Should only be attached after a later intent change toward D-12B.",
+                "Pairs with Jordan Alvarez and the lower-return evidence family.",
+              ],
             },
             {
               title: "Pump Recovery Packet Rev 4 Annotated",
               scope: "Markup copy",
               status: "Markup",
               signed: "No",
+              notes: [
+                "Reviewer markup copy with route-change comments in the margins.",
+                "Helpful for sensemaking, but not a valid signed attachment.",
+                "Visually similar to the signed rev 4 packet on purpose.",
+              ],
             },
           ],
           altIntent: {
@@ -1048,6 +1329,17 @@
       const auditCopy = document.getElementById("audit-copy");
       const saveButton = document.getElementById("save-button");
       const saveMessage = document.getElementById("save-message");
+      const docModal = document.getElementById("doc-modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalSubtitle = document.getElementById("modal-subtitle");
+      const modalStatus = document.getElementById("modal-status");
+      const modalScope = document.getElementById("modal-scope");
+      const modalSigned = document.getElementById("modal-signed");
+      const modalPreviewTitle = document.getElementById("modal-preview-title");
+      const modalPreviewCopy = document.getElementById("modal-preview-copy");
+      const modalPreviewList = document.getElementById("modal-preview-list");
+      const modalAttachButton = document.getElementById("modal-attach-button");
+      const modalCloseButton = document.getElementById("modal-close-button");
 
       const state = Object.fromEntries(
         cases.map((item) => [
@@ -1061,6 +1353,13 @@
             slot: "",
             report: "",
             review: "Draft",
+            previewDocument: "",
+            evidenceFilters: {
+              asset: "All",
+              code: "All",
+              channel: "All",
+              confidence: "All",
+            },
           },
         ]),
       );
@@ -1073,6 +1372,42 @@
 
       function currentState() {
         return state[selectedCaseId];
+      }
+
+      function currentPreviewDocument() {
+        const previewTitle = currentState().previewDocument;
+        return (
+          currentCase().documents.find((doc) => doc.title === previewTitle) ||
+          null
+        );
+      }
+
+      function channelFamily(channel) {
+        return channel.split("-")[0];
+      }
+
+      function filteredEvidenceRows(item, taskState) {
+        const filters = taskState.evidenceFilters;
+        return item.evidenceRows.filter((row) => {
+          const channel = channelFamily(row.channel);
+          return (
+            (filters.asset === "All" || row.asset === filters.asset) &&
+            (filters.code === "All" || row.code === filters.code) &&
+            (filters.channel === "All" || channel === filters.channel) &&
+            (filters.confidence === "All" ||
+              row.confidence === filters.confidence)
+          );
+        });
+      }
+
+      function openDocumentPreview(title) {
+        currentState().previewDocument = title;
+        render();
+      }
+
+      function closeDocumentPreview() {
+        currentState().previewDocument = "";
+        render();
       }
 
       function renderButtons(
@@ -1114,6 +1449,7 @@
           `;
           button.addEventListener("click", () => {
             selectedCaseId = item.id;
+            currentState().previewDocument = "";
             saveMessage.textContent =
               "Resolve the target asset, collect the correct evidence rows, attach the final signed revision, and commit the escalation packet.";
             render();
@@ -1171,6 +1507,54 @@
       function attachDocument(title) {
         currentState().report = title;
         render();
+      }
+
+      function renderDocumentModal() {
+        const previewDoc = currentPreviewDocument();
+        const taskState = currentState();
+        const open = Boolean(previewDoc);
+        docModal.classList.toggle("open", open);
+        docModal.setAttribute("aria-hidden", open ? "false" : "true");
+
+        if (!previewDoc) {
+          modalTitle.textContent = "Document preview";
+          modalSubtitle.textContent =
+            "Inspect the revision before attaching it to the packet.";
+          modalStatus.textContent = "Unopened";
+          modalScope.textContent = "No document selected";
+          modalSigned.textContent = "Unknown";
+          modalPreviewTitle.textContent = "Preview page";
+          modalPreviewCopy.textContent =
+            "Select a document from the repository to open a revision preview.";
+          modalPreviewList.innerHTML = "";
+          modalAttachButton.disabled = true;
+          modalAttachButton.classList.remove("active");
+          return;
+        }
+
+        modalTitle.textContent = previewDoc.title;
+        modalSubtitle.textContent =
+          taskState.report === previewDoc.title
+            ? "This revision is currently attached to the packet."
+            : "Review the revision scope and signing status before attaching it.";
+        modalStatus.textContent = previewDoc.status;
+        modalScope.textContent = previewDoc.scope;
+        modalSigned.textContent = previewDoc.signed;
+        modalPreviewTitle.textContent = `${previewDoc.title} summary`;
+        modalPreviewCopy.textContent =
+          "Preview notes surface the scope, revision intent, and reasons this file may or may not be attachable.";
+        modalPreviewList.innerHTML = previewDoc.notes
+          .map((note) => `<li>${note}</li>`)
+          .join("");
+        modalAttachButton.disabled = false;
+        modalAttachButton.classList.toggle(
+          "active",
+          taskState.report === previewDoc.title,
+        );
+        modalAttachButton.textContent =
+          taskState.report === previewDoc.title
+            ? "Attached to Packet"
+            : "Attach to Packet";
       }
 
       function renderTabs() {
@@ -1247,13 +1631,81 @@
       }
 
       function evidenceMarkup(item, taskState) {
+        const filteredRows = filteredEvidenceRows(item, taskState);
+        const assetOptions = [
+          "All",
+          ...new Set(item.evidenceRows.map((row) => row.asset)),
+        ];
+        const codeOptions = [
+          "All",
+          ...new Set(item.evidenceRows.map((row) => row.code)),
+        ];
+        const channelOptions = [
+          "All",
+          ...new Set(
+            item.evidenceRows.map((row) => channelFamily(row.channel)),
+          ),
+        ];
+        const confidenceOptions = [
+          "All",
+          ...new Set(item.evidenceRows.map((row) => row.confidence)),
+        ];
         return `
           <h3>Evidence Archive</h3>
           <p>Dense archive view. Use time window, channel, and asset scope together rather than anomaly code alone.</p>
-          <div class="pill-row">
-            <div class="pill">Archive page 2 of 3</div>
-            <div class="pill">Rows sorted by confidence</div>
-            <div class="pill">Alias reuse present</div>
+          <div class="archive-meta">
+            <div class="pill-row">
+              <div class="pill">Archive page 2 of 3</div>
+              <div class="pill">Rows sorted by confidence</div>
+              <div class="pill">Alias reuse present</div>
+            </div>
+            <div class="archive-count">Showing ${filteredRows.length} of ${item.evidenceRows.length} rows</div>
+          </div>
+          <div class="filter-toolbar">
+            <div class="filter-group">
+              <label>Asset Scope</label>
+              <select data-filter="asset">
+                ${assetOptions
+                  .map(
+                    (value) =>
+                      `<option value="${value}" ${taskState.evidenceFilters.asset === value ? "selected" : ""}>${value === "All" ? "All assets" : value}</option>`,
+                  )
+                  .join("")}
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Anomaly Code</label>
+              <select data-filter="code">
+                ${codeOptions
+                  .map(
+                    (value) =>
+                      `<option value="${value}" ${taskState.evidenceFilters.code === value ? "selected" : ""}>${value === "All" ? "All codes" : value}</option>`,
+                  )
+                  .join("")}
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Channel Family</label>
+              <select data-filter="channel">
+                ${channelOptions
+                  .map(
+                    (value) =>
+                      `<option value="${value}" ${taskState.evidenceFilters.channel === value ? "selected" : ""}>${value === "All" ? "All channel families" : value}</option>`,
+                  )
+                  .join("")}
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Confidence</label>
+              <select data-filter="confidence">
+                ${confidenceOptions
+                  .map(
+                    (value) =>
+                      `<option value="${value}" ${taskState.evidenceFilters.confidence === value ? "selected" : ""}>${value === "All" ? "All confidence levels" : value}</option>`,
+                  )
+                  .join("")}
+              </select>
+            </div>
           </div>
           <table>
             <thead>
@@ -1268,10 +1720,19 @@
               </tr>
             </thead>
             <tbody>
-              ${item.evidenceRows
-                .map((row) => {
-                  const selected = taskState.evidenceSelection.includes(row.id);
-                  return `
+              ${
+                filteredRows.length === 0
+                  ? `
+                    <tr>
+                      <td colspan="7">No evidence rows match the current archive filters.</td>
+                    </tr>
+                  `
+                  : filteredRows
+                      .map((row) => {
+                        const selected = taskState.evidenceSelection.includes(
+                          row.id,
+                        );
+                        return `
                     <tr class="${selected ? "selected" : ""}">
                       <td>${row.id}</td>
                       <td>${row.asset}</td>
@@ -1282,8 +1743,9 @@
                       <td><button class="row-button ${selected ? "active" : ""}" type="button" data-row="${row.id}">${selected ? "Added" : "Add"}</button></td>
                     </tr>
                   `;
-                })
-                .join("")}
+                      })
+                      .join("")
+              }
             </tbody>
           </table>
         `;
@@ -1305,7 +1767,10 @@
                     </div>
                     <span>Scope: ${doc.scope}</span>
                     <span>Signed: ${doc.signed}</span>
-                    <button class="doc-button ${active ? "active" : ""}" type="button" data-doc="${doc.title}">${active ? "Attached" : "Attach"}</button>
+                    <p class="preview-blurb">${doc.notes[0]}</p>
+                    <div class="doc-actions">
+                      <button class="doc-button ${active ? "active" : ""}" type="button" data-preview="${doc.title}">${active ? "Open attached revision" : "Open preview"}</button>
+                    </div>
                   </div>
                 `;
               })
@@ -1328,6 +1793,12 @@
         }
         if (taskState.activeTab === "Evidence Archive") {
           tabContent.innerHTML = evidenceMarkup(item, taskState);
+          tabContent.querySelectorAll("[data-filter]").forEach((select) => {
+            select.addEventListener("change", () => {
+              taskState.evidenceFilters[select.dataset.filter] = select.value;
+              render();
+            });
+          });
           tabContent.querySelectorAll("[data-row]").forEach((button) => {
             button.addEventListener("click", () => {
               toggleEvidenceRow(button.dataset.row);
@@ -1337,9 +1808,9 @@
           return;
         }
         tabContent.innerHTML = documentMarkup(item, taskState);
-        tabContent.querySelectorAll("[data-doc]").forEach((button) => {
+        tabContent.querySelectorAll("[data-preview]").forEach((button) => {
           button.addEventListener("click", () =>
-            attachDocument(button.dataset.doc),
+            openDocumentPreview(button.dataset.preview),
           );
         });
       }
@@ -1473,6 +1944,24 @@
         saveMessage.textContent = `Saved ${item.id}: asset ${taskState.selectedAsset || "none"}, code ${taskState.anomalyCode || "none"}, evidence ${taskState.evidenceSelection.join(", ") || "none"}, technician ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, attachment ${taskState.report || "none"}, status ${taskState.review}.`;
       });
 
+      modalCloseButton.addEventListener("click", () => {
+        closeDocumentPreview();
+      });
+
+      modalAttachButton.addEventListener("click", () => {
+        const previewDoc = currentPreviewDocument();
+        if (!previewDoc) return;
+        attachDocument(previewDoc.title);
+        currentState().previewDocument = "";
+        render();
+      });
+
+      docModal.addEventListener("click", (event) => {
+        if (event.target === docModal) {
+          closeDocumentPreview();
+        }
+      });
+
       function render() {
         renderCaseQueue();
         renderProtocol();
@@ -1481,6 +1970,7 @@
         renderTabContent();
         renderSummaryAndControls();
         renderChecklist();
+        renderDocumentModal();
       }
 
       render();
