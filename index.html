@@ -306,6 +306,12 @@
         gap: 10px;
       }
 
+      .note-grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .two-col {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -1198,35 +1204,35 @@
         const zoneMarkup =
           item.zone === "Zone C"
             ? `
-                <div class="zone-frame" style="left: 54px; top: 58px; width: 358px; height: 214px"></div>
+                <div class="zone-frame" style="left: 46px; top: 56px; width: 452px; height: 216px"></div>
                 <div class="map-label" style="left: 24px; top: 18px">${item.zone}</div>
-                <div class="map-label" style="left: 252px; top: 18px">${item.topologyLabels.region}</div>
-                <div class="pipe" style="left: 104px; top: 92px; width: 260px; height: 10px"></div>
-                <div class="pipe" style="left: 228px; top: 102px; width: 10px; height: 126px"></div>
-                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 82px; top: 134px; width: 110px; height: 62px" type="button" data-asset="C-17L">C-17L</button>
-                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 250px; top: 134px; width: 110px; height: 62px" type="button" data-asset="C-17R">C-17R</button>
-                <div class="landmark-label" style="left: 96px; top: 108px">${item.topologyLabels.leftHint}</div>
-                <div class="landmark-label" style="left: 262px; top: 108px">${item.topologyLabels.rightHint}</div>
-                <div class="map-label" style="left: 164px; top: 234px">Inspection ladder</div>
-                <div class="map-label" style="left: 156px; top: 66px">West manifold</div>
+                <div class="map-label" style="left: 318px; top: 18px">${item.topologyLabels.region}</div>
+                <div class="pipe" style="left: 118px; top: 92px; width: 300px; height: 10px"></div>
+                <div class="pipe" style="left: 266px; top: 102px; width: 10px; height: 126px"></div>
+                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 92px; top: 132px; width: 124px; height: 64px" type="button" data-asset="C-17L">C-17L</button>
+                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 322px; top: 132px; width: 124px; height: 64px" type="button" data-asset="C-17R">C-17R</button>
+                <div class="landmark-label" style="left: 122px; top: 108px">${item.topologyLabels.leftHint}</div>
+                <div class="landmark-label" style="left: 352px; top: 108px">${item.topologyLabels.rightHint}</div>
+                <div class="map-label" style="left: 202px; top: 236px">Inspection ladder</div>
+                <div class="map-label" style="left: 196px; top: 66px">West manifold</div>
               `
             : `
-                <div class="zone-frame" style="left: 90px; top: 52px; width: 308px; height: 226px"></div>
+                <div class="zone-frame" style="left: 100px; top: 48px; width: 286px; height: 232px"></div>
                 <div class="map-label" style="left: 24px; top: 18px">${item.zone}</div>
-                <div class="map-label" style="left: 250px; top: 18px">${item.topologyLabels.region}</div>
-                <div class="pipe" style="left: 224px; top: 86px; width: 10px; height: 158px"></div>
-                <div class="pipe" style="left: 154px; top: 164px; width: 150px; height: 10px"></div>
-                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 170px; top: 82px; width: 116px; height: 62px" type="button" data-asset="D-12A">D-12A</button>
-                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 170px; top: 186px; width: 116px; height: 62px" type="button" data-asset="D-12B">D-12B</button>
-                <div class="landmark-label" style="left: 186px; top: 58px">${item.topologyLabels.upperHint}</div>
-                <div class="landmark-label" style="left: 186px; top: 258px">${item.topologyLabels.lowerHint}</div>
-                <div class="map-label" style="left: 142px; top: 286px">Yellow bypass rail</div>
-                <div class="map-label" style="left: 124px; top: 148px">Return pump spine</div>
+                <div class="map-label" style="left: 282px; top: 18px">${item.topologyLabels.region}</div>
+                <div class="pipe" style="left: 238px; top: 88px; width: 10px; height: 156px"></div>
+                <div class="pipe" style="left: 162px; top: 164px; width: 164px; height: 10px"></div>
+                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 184px; top: 84px; width: 112px; height: 60px" type="button" data-asset="D-12A">D-12A</button>
+                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 184px; top: 186px; width: 112px; height: 60px" type="button" data-asset="D-12B">D-12B</button>
+                <div class="landmark-label" style="left: 206px; top: 58px">${item.topologyLabels.upperHint}</div>
+                <div class="landmark-label" style="left: 206px; top: 258px">${item.topologyLabels.lowerHint}</div>
+                <div class="map-label" style="left: 154px; top: 286px">Yellow bypass rail</div>
+                <div class="map-label" style="left: 130px; top: 148px">Return pump spine</div>
               `;
 
         return `
-          <div class="module-grid two-col">
-            <div>
+          <div class="module-grid">
+            <div class="note-grid">
               ${noteCards}
             </div>
             <div class="module">
