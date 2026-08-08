@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ops Handoff Workspace</title>
+    <title>Office Event Setup Workspace</title>
     <style>
       :root {
         color-scheme: light;
@@ -144,6 +144,33 @@
         gap: 8px;
         text-align: left;
         cursor: pointer;
+      }
+
+      .staff-card {
+        width: 100%;
+        display: block;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        color: inherit;
+        appearance: none;
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+
+      .staff-card:hover,
+      .staff-card:focus-visible {
+        border-color: #8bbbe3;
+        background: #f6fbff;
+        outline: none;
+      }
+
+      .staff-card.active {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        box-shadow: inset 0 0 0 1px rgba(15, 108, 189, 0.18);
       }
 
       .case-card.active {
@@ -753,10 +780,10 @@
     <div class="shell">
       <section class="topbar panel">
         <div>
-          <h1>Ops Handoff Workspace</h1>
+          <h1>Office Event Setup Workspace</h1>
           <p>
-            Long-horizon escalation workflow with protocol arbitration, topology
-            ambiguity, dense evidence archives, and revision tracking.
+            Coordinate meeting-room setup requests using organizer notes, the
+            office map, request logs, staff availability, and setup documents.
           </p>
         </div>
         <div class="chip">Final Study Build</div>
@@ -765,31 +792,31 @@
       <section class="content">
         <section class="left-column">
           <article class="panel panel-body">
-            <h2>Case Queue</h2>
+            <h2>Setup Requests</h2>
             <p>
-              Open the packet you want to complete before navigating the
+              Open the request you want to complete before navigating the
               workspace tabs.
             </p>
             <div class="case-list" id="case-list"></div>
           </article>
 
           <article class="panel panel-body">
-            <h2>Protocol Digest</h2>
+            <h2>Setup Rules</h2>
             <p>
-              When handoff notes conflict, use the protocol rules to resolve the
-              packet target.
+              If notes seem inconsistent, use these simple rules to identify the
+              correct room and matching request information.
             </p>
             <div class="digest-card">
-              <strong id="digest-title">Zone C escalation protocol</strong>
+              <strong id="digest-title">West Wing setup rules</strong>
               <ul id="digest-list"></ul>
             </div>
           </article>
 
           <article class="panel panel-body">
-            <h2>Certification Matrix</h2>
+            <h2>Staff Availability</h2>
             <p>
-              Select a technician who is certified for the active asset family
-              and available in the required window.
+              Select a staff member who is trained for the chosen room and is
+              available at the required time.
             </p>
             <div class="staff-list" id="staff-list"></div>
           </article>
@@ -798,23 +825,23 @@
         <article class="detail panel">
           <div class="detail-head">
             <div>
-              <h2 id="detail-title">CASE-201</h2>
-              <p id="detail-subtitle">Zone C coolant escalation packet</p>
+              <h2 id="detail-title">REQUEST-201</h2>
+              <p id="detail-subtitle">Team workshop room setup</p>
             </div>
-            <div class="record" id="record-id">Packet PKT-C201-A</div>
+            <div class="record" id="record-id">Setup SETUP-201-A</div>
           </div>
 
           <div class="summary-grid">
             <div class="summary-card">
-              <span>Selected Asset</span>
+              <span>Selected Room</span>
               <strong id="asset-summary">Unselected</strong>
             </div>
             <div class="summary-card">
-              <span>Anomaly Code</span>
+              <span>Setup Type</span>
               <strong id="code-summary">Unconfirmed</strong>
             </div>
             <div class="summary-card">
-              <span>Evidence Rows</span>
+              <span>Request Rows</span>
               <strong id="evidence-summary">0 rows</strong>
             </div>
             <div class="summary-card">
@@ -833,35 +860,35 @@
             <section class="right-column">
               <div class="module" id="tab-content"></div>
               <div class="module">
-                <h3>Packet Checklist</h3>
+                <h3>Setup Checklist</h3>
                 <p>
-                  Use the plan, evidence, and protocol views together before you
-                  finalize the packet.
+                  Use the notes, request log, and setup rules together before
+                  you finalize the request.
                 </p>
                 <ul class="checklist" id="progress-list"></ul>
               </div>
             </section>
 
             <section class="module">
-              <h3>Packet Composer</h3>
+              <h3>Setup Request</h3>
               <p>
                 Selections persist while you move across tabs. Attach the final
-                signed revision only.
+                approved setup sheet only.
               </p>
 
               <div class="pill-row" id="selected-evidence"></div>
 
               <div class="control-grid">
                 <div class="field-group">
-                  <label>Anomaly Code</label>
+                  <label>Setup Type</label>
                   <div class="segmented four" id="code-buttons"></div>
                 </div>
                 <div class="field-group">
-                  <label>Assigned Technician</label>
+                  <label>Assigned Staff</label>
                   <div class="segmented four" id="assignee-buttons"></div>
                 </div>
                 <div class="field-group">
-                  <label>Inspection Slot</label>
+                  <label>Setup Slot</label>
                   <div class="segmented four" id="slot-buttons"></div>
                 </div>
                 <div class="field-group">
@@ -869,11 +896,11 @@
                   <div class="segmented two" id="review-buttons"></div>
                 </div>
                 <div class="field-group full">
-                  <label>Packet Audit</label>
+                  <label>Request Summary</label>
                   <div class="audit-card">
-                    <strong id="audit-title">Packet audit banner</strong>
+                    <strong id="audit-title">Request summary</strong>
                     <span id="audit-copy"
-                      >No packet has been committed yet.</span
+                      >No setup request has been saved yet.</span
                     >
                   </div>
                 </div>
@@ -883,15 +910,14 @@
 
           <div class="banner">
             <div>
-              <h3>Packet Banner</h3>
+              <h3>Request Status</h3>
               <p id="save-message">
-                Resolve the target asset, collect the correct evidence rows,
-                attach the final signed revision, and commit the escalation
-                packet.
+                Choose the correct room, collect the matching request rows,
+                attach the final approved setup sheet, and save the request.
               </p>
             </div>
             <button class="save-btn" id="save-button" type="button">
-              Commit Packet
+              Save Request
             </button>
           </div>
         </article>
@@ -904,7 +930,7 @@
           <div>
             <h3 id="modal-title">Document preview</h3>
             <p id="modal-subtitle">
-              Inspect the revision before attaching it to the packet.
+              Inspect the document before attaching it to the request.
             </p>
           </div>
           <button class="modal-close" id="modal-close-button" type="button">
@@ -922,7 +948,7 @@
             <strong id="modal-scope">No document selected</strong>
           </div>
           <div class="preview-meta-card">
-            <span>Signed</span>
+            <span>Approved</span>
             <strong id="modal-signed">Unknown</strong>
           </div>
         </div>
@@ -939,465 +965,469 @@
 
         <div class="modal-actions">
           <button class="doc-button" id="modal-attach-button" type="button">
-            Attach to Packet
+            Attach to Request
           </button>
         </div>
       </div>
     </div>
 
     <script>
-      const tabs = ["Topology", "Evidence Archive", "Document Repository"];
+      const tabs = ["Office Map", "Request Log", "Setup Documents"];
 
       const technicians = [
         {
           name: "Alex Kim",
-          certification: "Zone C west-branch cooling loops",
-          assetGroups: ["C-17L", "C-17R"],
+          certification: "West Wing meeting-room setups",
+          assetGroups: ["Cedar Room", "Maple Room"],
           slot: "Today 4:30 PM",
-          note: "Certified for west/east coolant branch arbitration and manifold checks.",
+          note: "Trained to prepare both West Wing rooms for workshops and presentations.",
         },
         {
           name: "Priya Singh",
-          certification: "Zone D upper-return pumps",
-          assetGroups: ["D-12A"],
+          certification: "Aspen Room video-call setups",
+          assetGroups: ["Aspen Room"],
           slot: "Today 2:30 PM",
-          note: "Certified for upper-return pump packets and restart jitter analysis.",
+          note: "Trained for Aspen Room video conferencing and client-meeting setups.",
         },
         {
           name: "Jordan Alvarez",
-          certification: "Zone D lower-return pumps",
-          assetGroups: ["D-12B"],
+          certification: "Birch Room video-call setups",
+          assetGroups: ["Birch Room"],
           slot: "Today 5:00 PM",
-          note: "Certified for lower-return pump isolation and bypass bleed checks.",
+          note: "Trained for Birch Room video conferencing and client-meeting setups.",
         },
         {
           name: "Morgan Patel",
-          certification: "General mechanical support",
+          certification: "General office support",
           assetGroups: [],
           slot: "Tomorrow 9:00 AM",
-          note: "Not certified for mirrored branch arbitration cases.",
+          note: "Available for general help, but not trained for these room-specific AV setups.",
         },
       ];
 
       const cases = [
         {
-          id: "CASE-201",
+          id: "REQUEST-201",
           label: "Plan-Only",
-          subtitle: "Zone C coolant escalation packet",
-          packet: "PKT-C201-A",
-          zone: "Zone C",
-          targetAsset: "C-17L",
-          mirroredAsset: "C-17R",
-          targetCode: "HX-44",
-          evidenceTargets: ["EV-882", "EV-901", "EV-905"],
+          subtitle: "Team workshop room setup",
+          packet: "SETUP-201-A",
+          zone: "West Wing",
+          targetAsset: "Cedar Room",
+          mirroredAsset: "Maple Room",
+          targetCode: "Workshop",
+          evidenceTargets: ["REQ-882", "REQ-901", "REQ-905"],
           assignee: "Alex Kim",
           slot: "Today 4:30 PM",
-          report: "Cooling Loop Packet Rev 3 Signed",
+          report: "Workshop Setup Sheet Rev 3 Approved",
           noteBlocks: [
             {
-              title: "Morning Handoff",
+              title: "Organizer Note",
               bullets: [
-                "QA reported the active branch is left of the inspection ladder on the west manifold.",
-                "The coolant spike started during the 08:10-08:20 review window.",
-                "Do not rely on the mirrored branch alias alone because both branches inherited the same HX tag last week.",
+                "The workshop is in the room to the left of the kitchenette in the West Wing.",
+                "The organizer submitted the room-setup requests during the 10:10-10:20 window.",
+                "Do not rely on the repeated Workshop label alone because both nearby rooms hosted workshops last week.",
               ],
             },
             {
-              title: "Evening Addendum",
+              title: "Office Note",
               bullets: [
-                "Yesterday's east-branch cleanup ticket reused the C-17 family label and should not be reopened unless East channels exceed the time window.",
-                "The current packet still belongs to the west branch unless protocol arbitration says otherwise.",
+                "Yesterday's Maple Room event used the same Workshop label and should not be mixed into today's request.",
+                "For today's setup, use the room location from the organizer note to decide which request rows belong together.",
               ],
             },
           ],
-          digestTitle: "Zone C escalation protocol",
+          digestTitle: "West Wing setup rules",
           digestRules: [
-            "When morning and evening notes conflict, prioritize the physical landmark cue before the reused branch alias.",
-            "For CASE-201, valid evidence rows must be inside the 08:10-08:20 window and on west-return channels only.",
-            "Attach the highest signed Cooling Loop Packet revision that explicitly covers the west branch.",
+            "If room labels are repeated, use the organizer's physical location cue to identify the correct room.",
+            "For REQUEST-201, valid request rows must be inside the 10:10-10:20 window and belong to the West side.",
+            "Attach the newest approved Workshop Setup Sheet that explicitly names the selected room.",
           ],
-          queueHint: "Mirrored branch ambiguity plus reused HX labels.",
+          queueHint: "Two nearby rooms have similar workshop records.",
           topologyLabels: {
-            region: "Zone C coolant branches",
-            leftHint: "West branch",
-            rightHint: "East branch",
-            upperHint: "Holding manifold",
-            lowerHint: "Inspection ladder",
+            region: "West Wing meeting rooms",
+            leftHint: "Left of kitchenette",
+            rightHint: "Right of kitchenette",
+            upperHint: "Meeting rooms",
+            lowerHint: "Kitchenette",
           },
           defaultEvidenceFilters: {
-            asset: "C-17R",
-            code: "HX-41",
+            asset: "Maple Room",
+            code: "Presentation",
             channel: "East",
             confidence: "Medium",
           },
           evidenceRows: [
             {
-              id: "EV-882",
-              asset: "C-17L",
-              time: "08:11",
-              code: "HX-44",
+              id: "REQ-882",
+              asset: "Cedar Room",
+              time: "10:11",
+              code: "Workshop",
               channel: "West-A",
               confidence: "High",
             },
             {
-              id: "EV-901",
-              asset: "C-17L",
-              time: "08:16",
-              code: "HX-44",
+              id: "REQ-901",
+              asset: "Cedar Room",
+              time: "10:16",
+              code: "Workshop",
               channel: "West-B",
               confidence: "High",
             },
             {
-              id: "EV-905",
-              asset: "C-17L",
-              time: "08:19",
-              code: "HX-44",
+              id: "REQ-905",
+              asset: "Cedar Room",
+              time: "10:19",
+              code: "Workshop",
               channel: "West-C",
               confidence: "High",
             },
             {
-              id: "EV-887",
-              asset: "C-17R",
-              time: "08:12",
-              code: "HX-44",
+              id: "REQ-887",
+              asset: "Maple Room",
+              time: "10:12",
+              code: "Workshop",
               channel: "East-A",
               confidence: "High",
             },
             {
-              id: "EV-914",
-              asset: "C-17R",
-              time: "08:17",
-              code: "HX-44",
+              id: "REQ-914",
+              asset: "Maple Room",
+              time: "10:17",
+              code: "Workshop",
               channel: "East-B",
               confidence: "High",
             },
             {
-              id: "EV-918",
-              asset: "C-17R",
-              time: "08:23",
-              code: "HX-44",
+              id: "REQ-918",
+              asset: "Maple Room",
+              time: "10:23",
+              code: "Workshop",
               channel: "East-C",
               confidence: "High",
             },
             {
-              id: "EV-921",
-              asset: "C-17R",
-              time: "08:15",
-              code: "HX-44",
+              id: "REQ-921",
+              asset: "Maple Room",
+              time: "10:15",
+              code: "Workshop",
               channel: "East-D",
               confidence: "High",
             },
             {
-              id: "EV-930",
-              asset: "C-17R",
-              time: "08:18",
-              code: "HX-44",
+              id: "REQ-930",
+              asset: "Maple Room",
+              time: "10:18",
+              code: "Workshop",
               channel: "East-E",
               confidence: "High",
             },
             {
-              id: "EV-874",
-              asset: "C-17L",
-              time: "08:06",
-              code: "HX-44",
+              id: "REQ-874",
+              asset: "Cedar Room",
+              time: "10:06",
+              code: "Workshop",
               channel: "West-A",
               confidence: "Medium",
             },
             {
-              id: "EV-876",
-              asset: "C-17L",
-              time: "08:05",
-              code: "HX-41",
+              id: "REQ-876",
+              asset: "Cedar Room",
+              time: "10:05",
+              code: "Presentation",
               channel: "West-A",
               confidence: "Medium",
             },
             {
-              id: "EV-893",
-              asset: "C-17L",
-              time: "08:14",
-              code: "HX-41",
+              id: "REQ-893",
+              asset: "Cedar Room",
+              time: "10:14",
+              code: "Presentation",
               channel: "West-B",
               confidence: "Medium",
             },
             {
-              id: "EV-909",
-              asset: "C-17R",
-              time: "08:21",
-              code: "HX-41",
+              id: "REQ-909",
+              asset: "Maple Room",
+              time: "10:21",
+              code: "Presentation",
               channel: "East-B",
               confidence: "Medium",
             },
             {
-              id: "EV-934",
-              asset: "C-17R",
-              time: "08:26",
-              code: "HX-44",
+              id: "REQ-934",
+              asset: "Maple Room",
+              time: "10:26",
+              code: "Workshop",
               channel: "East-F",
               confidence: "Low",
             },
           ],
           documents: [
             {
-              title: "Cooling Loop Packet Rev 1 Draft",
-              scope: "All C-17 branches",
+              title: "Workshop Setup Sheet Rev 1 Draft",
+              scope: "Both West Wing rooms",
               status: "Draft",
               signed: "No",
               notes: [
-                "Older branch-agnostic draft that still references both mirrored coolant paths.",
-                "Lacks the signed west-branch escalation approval block.",
-                "Useful for comparison, but not valid for final packet attachment.",
+                "Older draft that still lists both Cedar Room and Maple Room.",
+                "It has not been approved for today's workshop.",
+                "Useful for comparison, but not valid as the final attachment.",
               ],
             },
             {
-              title: "Cooling Loop Packet Rev 2 Signed",
-              scope: "East branch only",
-              status: "Signed",
+              title: "Workshop Setup Sheet Rev 2 Approved",
+              scope: "Maple Room only",
+              status: "Approved",
               signed: "Yes",
               notes: [
-                "Signed revision, but scoped to the mirrored east branch.",
-                "Retains the reused HX alias that conflicts with the handoff landmark cue.",
-                "Should not be attached when the packet resolves to C-17L.",
+                "Approved revision, but it is for Maple Room.",
+                "It belongs to yesterday's nearby workshop rather than today's room.",
+                "Do not attach it when the request resolves to Cedar Room.",
               ],
             },
             {
-              title: "Cooling Loop Packet Rev 3 Signed",
-              scope: "West branch escalation",
-              status: "Signed",
+              title: "Workshop Setup Sheet Rev 3 Approved",
+              scope: "Cedar Room workshop",
+              status: "Approved",
               signed: "Yes",
               notes: [
-                "Latest signed revision whose scope explicitly matches the west branch escalation.",
-                "Revision body references the inspection ladder landmark and the 08:10-08:20 window.",
-                "This is the correct final attachment for CASE-201.",
+                "Newest approved revision that explicitly names Cedar Room.",
+                "The sheet references the kitchenette location and the 10:10-10:20 request window.",
+                "This is the correct final attachment for REQUEST-201.",
               ],
             },
             {
-              title: "Cooling Loop Packet Rev 3 Annotated",
-              scope: "Review markup copy",
-              status: "Markup",
+              title: "Workshop Setup Sheet Rev 3 Notes",
+              scope: "Coordinator notes copy",
+              status: "Notes",
               signed: "No",
               notes: [
-                "Annotated reviewer copy with comments and markup overlays.",
-                "Contains the correct branch discussion, but is not a signed deliverable.",
-                "Should be previewed, not attached as the final packet revision.",
+                "Coordinator copy with comments and reminder notes.",
+                "It discusses the correct room, but is not the approved deliverable.",
+                "Preview it if useful, but do not attach it as the final setup sheet.",
               ],
             },
           ],
           altIntent: null,
         },
         {
-          id: "CASE-318",
+          id: "REQUEST-318",
           label: "Full Plover",
-          subtitle: "Zone D pump escalation packet",
-          packet: "PKT-D318-B",
-          zone: "Zone D",
-          targetAsset: "D-12A",
-          mirroredAsset: "D-12B",
-          targetCode: "VP-09",
-          evidenceTargets: ["EV-417", "EV-433", "EV-441"],
+          subtitle: "Client video-call room setup",
+          packet: "SETUP-318-B",
+          zone: "Third Floor",
+          targetAsset: "Aspen Room",
+          mirroredAsset: "Birch Room",
+          targetCode: "Video call",
+          evidenceTargets: ["REQ-417", "REQ-433", "REQ-441"],
           assignee: "Priya Singh",
           slot: "Today 2:30 PM",
-          report: "Pump Recovery Packet Rev 4 Signed",
+          report: "Video Call Setup Sheet Rev 4 Approved",
           noteBlocks: [
             {
-              title: "Morning Handoff",
+              title: "Organizer Note",
               bullets: [
-                "The active target sits on the upper return branch above the yellow bypass rail.",
-                "Use evidence rows recorded after 09:00 on upper-return channels only.",
-                "The mirrored lower-return pump reused the same VP-09 code during yesterday's validation cycle.",
+                "The client meeting is in the room above the printer station on the Third Floor map.",
+                "Use setup-request rows submitted after 2:00 PM for the north-side room only.",
+                "The room below the printer station also had a Video call request yesterday, so the setup type alone is not enough.",
               ],
             },
             {
-              title: "Evening Addendum",
+              title: "Office Note",
               bullets: [
-                "If operations later redirects the packet to the lower return branch, switch to the lower-return evidence family and certified technician.",
-                "Do not keep the upper-return attachment if the packet is reassigned to D-12B.",
+                "If the wrong room is selected, its request rows, staff assignment, time slot, and setup sheet will also be different.",
+                "Keep already-correct information when repairing the request; only room-dependent fields need to change.",
               ],
             },
           ],
-          digestTitle: "Zone D escalation protocol",
+          digestTitle: "Third Floor setup rules",
           digestRules: [
-            "Choose the branch whose physical position matches the rail landmark before trusting the mirrored D-12 label.",
-            "For D-12A, use upper-return evidence rows after 09:00. For a later redirect to D-12B, use lower-return rows after 09:10 instead.",
-            "Attach the latest signed packet revision whose scope matches the final selected branch.",
+            "Use the room's physical position on the office map before relying on repeated event labels.",
+            "For Aspen Room, use north-side request rows after 2:00 PM. Birch Room uses south-side rows after 2:10 PM.",
+            "Attach the newest approved setup sheet whose room matches the final selected room.",
           ],
-          queueHint:
-            "Upper vs lower branch ambiguity with later redirect support.",
+          queueHint: "Two nearby rooms have similar video-call setup records.",
           topologyLabels: {
-            region: "Zone D return pumps",
-            leftHint: "Bypass rail",
-            rightHint: "Return pumps",
-            upperHint: "Upper return",
-            lowerHint: "Lower return",
+            region: "Third Floor meeting rooms",
+            leftHint: "Printer station",
+            rightHint: "Meeting rooms",
+            upperHint: "North side",
+            lowerHint: "South side",
           },
           defaultEvidenceFilters: {
-            asset: "D-12B",
-            code: "VP-12",
-            channel: "Lower",
+            asset: "Birch Room",
+            code: "Presentation",
+            channel: "South",
             confidence: "Medium",
           },
           evidenceRows: [
             {
-              id: "EV-417",
-              asset: "D-12A",
-              time: "09:03",
-              code: "VP-09",
-              channel: "Upper-A",
+              id: "REQ-417",
+              asset: "Aspen Room",
+              time: "14:03",
+              code: "Video call",
+              channel: "North-A",
               confidence: "High",
             },
             {
-              id: "EV-433",
-              asset: "D-12A",
-              time: "09:08",
-              code: "VP-09",
-              channel: "Upper-B",
+              id: "REQ-433",
+              asset: "Aspen Room",
+              time: "14:08",
+              code: "Video call",
+              channel: "North-B",
               confidence: "High",
             },
             {
-              id: "EV-441",
-              asset: "D-12A",
-              time: "09:15",
-              code: "VP-09",
-              channel: "Upper-C",
+              id: "REQ-441",
+              asset: "Aspen Room",
+              time: "14:15",
+              code: "Video call",
+              channel: "North-C",
               confidence: "High",
             },
             {
-              id: "EV-425",
-              asset: "D-12B",
-              time: "09:11",
-              code: "VP-09",
-              channel: "Lower-A",
+              id: "REQ-425",
+              asset: "Birch Room",
+              time: "14:11",
+              code: "Video call",
+              channel: "South-A",
               confidence: "High",
             },
             {
-              id: "EV-439",
-              asset: "D-12B",
-              time: "09:14",
-              code: "VP-09",
-              channel: "Lower-B",
+              id: "REQ-439",
+              asset: "Birch Room",
+              time: "14:14",
+              code: "Video call",
+              channel: "South-B",
               confidence: "High",
             },
             {
-              id: "EV-447",
-              asset: "D-12B",
-              time: "09:18",
-              code: "VP-09",
-              channel: "Lower-C",
+              id: "REQ-447",
+              asset: "Birch Room",
+              time: "14:18",
+              code: "Video call",
+              channel: "South-C",
               confidence: "High",
             },
             {
-              id: "EV-451",
-              asset: "D-12B",
-              time: "09:19",
-              code: "VP-09",
-              channel: "Lower-D",
+              id: "REQ-451",
+              asset: "Birch Room",
+              time: "14:19",
+              code: "Video call",
+              channel: "South-D",
               confidence: "High",
             },
             {
-              id: "EV-455",
-              asset: "D-12B",
-              time: "09:22",
-              code: "VP-09",
-              channel: "Lower-E",
+              id: "REQ-455",
+              asset: "Birch Room",
+              time: "14:22",
+              code: "Video call",
+              channel: "South-E",
               confidence: "High",
             },
             {
-              id: "EV-403",
-              asset: "D-12A",
-              time: "08:52",
-              code: "VP-12",
-              channel: "Upper-A",
+              id: "REQ-403",
+              asset: "Aspen Room",
+              time: "13:52",
+              code: "Presentation",
+              channel: "North-A",
               confidence: "Medium",
             },
             {
-              id: "EV-409",
-              asset: "D-12A",
-              time: "08:58",
-              code: "VP-09",
-              channel: "Upper-A",
+              id: "REQ-409",
+              asset: "Aspen Room",
+              time: "13:58",
+              code: "Video call",
+              channel: "North-A",
               confidence: "Medium",
             },
             {
-              id: "EV-429",
-              asset: "D-12A",
-              time: "09:06",
-              code: "VP-12",
-              channel: "Upper-B",
+              id: "REQ-429",
+              asset: "Aspen Room",
+              time: "14:06",
+              code: "Presentation",
+              channel: "North-B",
               confidence: "Medium",
             },
             {
-              id: "EV-443",
-              asset: "D-12B",
-              time: "09:16",
-              code: "VP-12",
-              channel: "Lower-B",
+              id: "REQ-443",
+              asset: "Birch Room",
+              time: "14:16",
+              code: "Presentation",
+              channel: "South-B",
               confidence: "Medium",
             },
             {
-              id: "EV-460",
-              asset: "D-12B",
-              time: "09:25",
-              code: "VP-09",
-              channel: "Lower-F",
+              id: "REQ-460",
+              asset: "Birch Room",
+              time: "14:25",
+              code: "Video call",
+              channel: "South-F",
               confidence: "Low",
             },
           ],
           documents: [
             {
-              title: "Pump Recovery Packet Rev 2 Signed",
-              scope: "Legacy D-12 set",
-              status: "Signed",
+              title: "Video Call Setup Sheet Rev 2 Approved",
+              scope: "Both Third Floor rooms",
+              status: "Approved",
               signed: "Yes",
               notes: [
-                "Older signed packet spanning both mirrored return paths.",
-                "Still references the legacy combined topology and should not be used for final arbitration.",
-                "Included to make revision search less trivial.",
+                "Older approved sheet that lists both Third Floor meeting rooms.",
+                "It does not identify which room should be prepared for today's client meeting.",
+                "Included as an older comparison copy.",
               ],
             },
             {
-              title: "Pump Recovery Packet Rev 4 Signed",
-              scope: "Upper return packet",
-              status: "Signed",
+              title: "Video Call Setup Sheet Rev 4 Approved",
+              scope: "Aspen Room client meeting",
+              status: "Approved",
               signed: "Yes",
               notes: [
-                "Latest signed packet for the upper-return branch and initial CASE-318 target.",
-                "Matches D-12A, upper-return evidence rows, and Priya Singh's certification.",
-                "Valid unless the user later redirects the packet to D-12B.",
+                "Newest approved sheet for the Aspen Room client meeting.",
+                "Matches Aspen Room, north-side request rows, and Priya Singh's training.",
+                "This is the correct final attachment for REQUEST-318.",
               ],
             },
             {
-              title: "Pump Recovery Packet Rev 4 Lower Return Signed",
-              scope: "Lower return packet",
-              status: "Signed",
+              title: "Video Call Setup Sheet Rev 4 Birch Approved",
+              scope: "Birch Room client meeting",
+              status: "Approved",
               signed: "Yes",
               notes: [
-                "Alternate signed packet for the lower-return redirect path.",
-                "Should only be attached after a later intent change toward D-12B.",
-                "Pairs with Jordan Alvarez and the lower-return evidence family.",
+                "Approved sheet for the nearby Birch Room.",
+                "This belongs to the wrong-room path if the agent mistakenly prepares Birch instead of Aspen.",
+                "It pairs with Jordan Alvarez and the south-side request rows.",
               ],
             },
             {
-              title: "Pump Recovery Packet Rev 4 Annotated",
-              scope: "Markup copy",
-              status: "Markup",
+              title: "Video Call Setup Sheet Rev 4 Notes",
+              scope: "Coordinator notes copy",
+              status: "Notes",
               signed: "No",
               notes: [
-                "Reviewer markup copy with route-change comments in the margins.",
-                "Helpful for sensemaking, but not a valid signed attachment.",
-                "Visually similar to the signed rev 4 packet on purpose.",
+                "Coordinator copy with comments in the margins.",
+                "Helpful for checking details, but not a valid approved attachment.",
+                "Visually similar to the approved Rev 4 sheet on purpose.",
               ],
             },
           ],
           altIntent: {
-            targetAsset: "D-12B",
-            evidenceTargets: ["EV-425", "EV-439", "EV-447"],
+            targetAsset: "Birch Room",
+            evidenceTargets: ["REQ-425", "REQ-439", "REQ-447"],
             assignee: "Jordan Alvarez",
             slot: "Today 5:00 PM",
-            report: "Pump Recovery Packet Rev 4 Lower Return Signed",
+            report: "Video Call Setup Sheet Rev 4 Birch Approved",
           },
         },
       ];
 
-      const anomalyCodes = ["HX-41", "HX-44", "VP-09", "VP-12"];
+      const anomalyCodes = [
+        "Workshop",
+        "Presentation",
+        "Video call",
+        "Training",
+      ];
       const assignees = [
         "Alex Kim",
         "Priya Singh",
@@ -1453,7 +1483,7 @@
         cases.map((item) => [
           item.id,
           {
-            activeTab: "Topology",
+            activeTab: "Office Map",
             selectedAsset: "",
             anomalyCode: "",
             evidenceSelection: [],
@@ -1554,7 +1584,7 @@
             selectedCaseId = item.id;
             currentState().previewDocument = "";
             saveMessage.textContent =
-              "Resolve the target asset, collect the correct evidence rows, attach the final signed revision, and commit the escalation packet.";
+              "Choose the correct room, collect the matching request rows, attach the final approved setup sheet, and save the request.";
             render();
           });
           caseList.appendChild(button);
@@ -1574,22 +1604,29 @@
 
       function renderStaff() {
         const item = currentCase();
+        const taskState = currentState();
         staffList.innerHTML = "";
         technicians.forEach((tech) => {
-          const div = document.createElement("div");
-          div.className = "staff-card";
+          const div = document.createElement("button");
+          div.type = "button";
+          const selected = taskState.assignee === tech.name;
+          div.className = "staff-card" + (selected ? " active" : "");
           const relevant =
             tech.assetGroups.includes(item.targetAsset) ||
             tech.assetGroups.includes(item.mirroredAsset);
           div.innerHTML = `
             <div class="doc-head">
               <strong>${tech.name}</strong>
-              <div class="mini-tag">${relevant ? "Relevant" : "General"}</div>
+              <div class="mini-tag">${selected ? "Selected" : relevant ? "Relevant" : "General"}</div>
             </div>
             <span>${tech.certification}</span>
             <span>Availability: ${tech.slot}</span>
             <span>${tech.note}</span>
           `;
+          div.addEventListener("click", () => {
+            taskState.assignee = tech.name;
+            render();
+          });
           staffList.appendChild(div);
         });
       }
@@ -1622,7 +1659,7 @@
         if (!previewDoc) {
           modalTitle.textContent = "Document preview";
           modalSubtitle.textContent =
-            "Inspect the revision before attaching it to the packet.";
+            "Inspect the document before attaching it to the request.";
           modalStatus.textContent = "Unopened";
           modalScope.textContent = "No document selected";
           modalSigned.textContent = "Unknown";
@@ -1638,14 +1675,14 @@
         modalTitle.textContent = previewDoc.title;
         modalSubtitle.textContent =
           taskState.report === previewDoc.title
-            ? "This revision is currently attached to the packet."
-            : "Review the revision scope and signing status before attaching it.";
+            ? "This document is currently attached to the request."
+            : "Review the document scope and approval status before attaching it.";
         modalStatus.textContent = previewDoc.status;
         modalScope.textContent = previewDoc.scope;
         modalSigned.textContent = previewDoc.signed;
         modalPreviewTitle.textContent = `${previewDoc.title} summary`;
         modalPreviewCopy.textContent =
-          "Preview notes surface the scope, revision intent, and reasons this file may or may not be attachable.";
+          "Preview notes explain which room this file covers and whether it is the right attachment.";
         modalPreviewList.innerHTML = previewDoc.notes
           .map((note) => `<li>${note}</li>`)
           .join("");
@@ -1656,8 +1693,8 @@
         );
         modalAttachButton.textContent =
           taskState.report === previewDoc.title
-            ? "Attached to Packet"
-            : "Attach to Packet";
+            ? "Attached to Request"
+            : "Attach to Request";
       }
 
       function renderTabs() {
@@ -1689,19 +1726,19 @@
           .join("");
 
         const zoneMarkup =
-          item.zone === "Zone C"
+          item.zone === "West Wing"
             ? `
                 <div class="zone-frame" style="left: 46px; top: 56px; width: 452px; height: 216px"></div>
                 <div class="map-label" style="left: 24px; top: 18px">${item.zone}</div>
                 <div class="map-label" style="left: 318px; top: 18px">${item.topologyLabels.region}</div>
                 <div class="pipe" style="left: 118px; top: 92px; width: 300px; height: 10px"></div>
                 <div class="pipe" style="left: 266px; top: 102px; width: 10px; height: 126px"></div>
-                <button class="zone-button ${taskState.selectedAsset === "C-17L" ? "active" : ""}" style="left: 92px; top: 132px; width: 124px; height: 64px" type="button" data-asset="C-17L">C-17L</button>
-                <button class="zone-button ${taskState.selectedAsset === "C-17R" ? "active" : ""}" style="left: 322px; top: 132px; width: 124px; height: 64px" type="button" data-asset="C-17R">C-17R</button>
+                <button class="zone-button ${taskState.selectedAsset === "Cedar Room" ? "active" : ""}" style="left: 92px; top: 132px; width: 124px; height: 64px" type="button" data-asset="Cedar Room">Cedar Room</button>
+                <button class="zone-button ${taskState.selectedAsset === "Maple Room" ? "active" : ""}" style="left: 322px; top: 132px; width: 124px; height: 64px" type="button" data-asset="Maple Room">Maple Room</button>
                 <div class="landmark-label" style="left: 122px; top: 108px">${item.topologyLabels.leftHint}</div>
                 <div class="landmark-label" style="left: 352px; top: 108px">${item.topologyLabels.rightHint}</div>
-                <div class="map-label" style="left: 202px; top: 236px">Inspection ladder</div>
-                <div class="map-label" style="left: 196px; top: 66px">West manifold</div>
+                <div class="map-label" style="left: 210px; top: 236px">Kitchenette</div>
+                <div class="map-label" style="left: 198px; top: 66px">West hallway</div>
               `
             : `
                 <div class="zone-frame" style="left: 100px; top: 48px; width: 286px; height: 232px"></div>
@@ -1709,12 +1746,12 @@
                 <div class="map-label" style="left: 282px; top: 18px">${item.topologyLabels.region}</div>
                 <div class="pipe" style="left: 238px; top: 88px; width: 10px; height: 156px"></div>
                 <div class="pipe" style="left: 162px; top: 164px; width: 164px; height: 10px"></div>
-                <button class="zone-button ${taskState.selectedAsset === "D-12A" ? "active" : ""}" style="left: 184px; top: 84px; width: 112px; height: 60px" type="button" data-asset="D-12A">D-12A</button>
-                <button class="zone-button ${taskState.selectedAsset === "D-12B" ? "active" : ""}" style="left: 184px; top: 186px; width: 112px; height: 60px" type="button" data-asset="D-12B">D-12B</button>
+                <button class="zone-button ${taskState.selectedAsset === "Aspen Room" ? "active" : ""}" style="left: 184px; top: 84px; width: 112px; height: 60px" type="button" data-asset="Aspen Room">Aspen Room</button>
+                <button class="zone-button ${taskState.selectedAsset === "Birch Room" ? "active" : ""}" style="left: 184px; top: 186px; width: 112px; height: 60px" type="button" data-asset="Birch Room">Birch Room</button>
                 <div class="landmark-label" style="left: 206px; top: 58px">${item.topologyLabels.upperHint}</div>
                 <div class="landmark-label" style="left: 206px; top: 258px">${item.topologyLabels.lowerHint}</div>
-                <div class="map-label" style="left: 154px; top: 286px">Yellow bypass rail</div>
-                <div class="map-label" style="left: 130px; top: 148px">Return pump spine</div>
+                <div class="map-label" style="left: 174px; top: 286px">Printer station</div>
+                <div class="map-label" style="left: 144px; top: 148px">Main hallway</div>
               `;
 
         return `
@@ -1723,8 +1760,8 @@
               ${noteCards}
             </div>
             <div class="module">
-              <h3>Topology Map</h3>
-              <p>Choose the active asset after reconciling notes, protocol rules, and physical landmarks.</p>
+              <h3>Office Map</h3>
+              <p>Choose the correct room by matching the organizer notes with the room locations on the map.</p>
               <div class="map-surface">
                 ${zoneMarkup}
               </div>
@@ -1754,57 +1791,57 @@
           ...new Set(item.evidenceRows.map((row) => row.confidence)),
         ];
         return `
-          <h3>Evidence Archive</h3>
-          <p>Dense archive view. Use time window, channel, and asset scope together rather than anomaly code alone.</p>
+          <h3>Request Log</h3>
+          <p>Find the request rows that match the selected room, setup type, location, and time window.</p>
           <div class="archive-meta">
             <div class="pill-row">
-              <div class="pill">Archive page 2 of 3</div>
-              <div class="pill">Rows sorted by confidence</div>
-              <div class="pill">Alias reuse present</div>
+              <div class="pill">Log page 2 of 3</div>
+              <div class="pill">Rows sorted by match</div>
+              <div class="pill">Similar records present</div>
             </div>
             <div class="archive-count">Showing ${filteredRows.length} of ${item.evidenceRows.length} rows</div>
           </div>
           <div class="filter-toolbar">
             <div class="filter-group">
-              <label>Asset Scope</label>
+              <label>Room</label>
               <select data-filter="asset">
                 ${assetOptions
                   .map(
                     (value) =>
-                      `<option value="${value}" ${taskState.evidenceFilters.asset === value ? "selected" : ""}>${value === "All" ? "All assets" : value}</option>`,
+                      `<option value="${value}" ${taskState.evidenceFilters.asset === value ? "selected" : ""}>${value === "All" ? "All rooms" : value}</option>`,
                   )
                   .join("")}
               </select>
             </div>
             <div class="filter-group">
-              <label>Anomaly Code</label>
+              <label>Setup Type</label>
               <select data-filter="code">
                 ${codeOptions
                   .map(
                     (value) =>
-                      `<option value="${value}" ${taskState.evidenceFilters.code === value ? "selected" : ""}>${value === "All" ? "All codes" : value}</option>`,
+                      `<option value="${value}" ${taskState.evidenceFilters.code === value ? "selected" : ""}>${value === "All" ? "All setup types" : value}</option>`,
                   )
                   .join("")}
               </select>
             </div>
             <div class="filter-group">
-              <label>Channel Family</label>
+              <label>Area</label>
               <select data-filter="channel">
                 ${channelOptions
                   .map(
                     (value) =>
-                      `<option value="${value}" ${taskState.evidenceFilters.channel === value ? "selected" : ""}>${value === "All" ? "All channel families" : value}</option>`,
+                      `<option value="${value}" ${taskState.evidenceFilters.channel === value ? "selected" : ""}>${value === "All" ? "All areas" : value}</option>`,
                   )
                   .join("")}
               </select>
             </div>
             <div class="filter-group">
-              <label>Confidence</label>
+              <label>Match</label>
               <select data-filter="confidence">
                 ${confidenceOptions
                   .map(
                     (value) =>
-                      `<option value="${value}" ${taskState.evidenceFilters.confidence === value ? "selected" : ""}>${value === "All" ? "All confidence levels" : value}</option>`,
+                      `<option value="${value}" ${taskState.evidenceFilters.confidence === value ? "selected" : ""}>${value === "All" ? "All match levels" : value}</option>`,
                   )
                   .join("")}
               </select>
@@ -1814,11 +1851,11 @@
             <thead>
               <tr>
                 <th>Row</th>
-                <th>Asset</th>
+                <th>Room</th>
                 <th>Time</th>
-                <th>Code</th>
-                <th>Channel</th>
-                <th>Confidence</th>
+                <th>Setup Type</th>
+                <th>Area</th>
+                <th>Match</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -1827,7 +1864,7 @@
                 filteredRows.length === 0
                   ? `
                     <tr>
-                      <td colspan="7">No evidence rows match the current archive filters.</td>
+                      <td colspan="7">No request rows match the current filters.</td>
                     </tr>
                   `
                   : filteredRows
@@ -1856,8 +1893,8 @@
 
       function documentMarkup(item, taskState) {
         return `
-          <h3>Document Repository</h3>
-          <p>Several revisions are visually similar. Attach only the latest signed document whose scope matches the final branch.</p>
+          <h3>Setup Documents</h3>
+          <p>Several versions are similar. Attach only the newest approved setup sheet for the final selected room.</p>
           <div class="doc-list">
             ${item.documents
               .map((doc) => {
@@ -1869,7 +1906,7 @@
                       <div class="mini-tag">${doc.status}</div>
                     </div>
                     <span>Scope: ${doc.scope}</span>
-                    <span>Signed: ${doc.signed}</span>
+                    <span>Approved: ${doc.signed}</span>
                     <p class="preview-blurb">${doc.notes[0]}</p>
                     <div class="doc-actions">
                       <button class="doc-button ${active ? "active" : ""}" type="button" data-preview="${doc.title}">${active ? "Open attached revision" : "Open preview"}</button>
@@ -1885,7 +1922,7 @@
       function renderTabContent() {
         const item = currentCase();
         const taskState = currentState();
-        if (taskState.activeTab === "Topology") {
+        if (taskState.activeTab === "Office Map") {
           tabContent.innerHTML = topologyMarkup(item, taskState);
           tabContent.querySelectorAll("[data-asset]").forEach((button) => {
             button.addEventListener("click", () =>
@@ -1894,7 +1931,7 @@
           });
           return;
         }
-        if (taskState.activeTab === "Evidence Archive") {
+        if (taskState.activeTab === "Request Log") {
           tabContent.innerHTML = evidenceMarkup(item, taskState);
           tabContent.querySelectorAll("[data-filter]").forEach((select) => {
             select.addEventListener("change", () => {
@@ -1928,19 +1965,19 @@
           );
         return [
           {
-            label: `Correct asset selected (${item.targetAsset})`,
+            label: `Correct room selected (${item.targetAsset})`,
             done: taskState.selectedAsset === item.targetAsset,
           },
           {
-            label: `Anomaly code confirmed (${item.targetCode})`,
+            label: `Setup type confirmed (${item.targetCode})`,
             done: taskState.anomalyCode === item.targetCode,
           },
           {
-            label: `Evidence archive rows transferred (${item.evidenceTargets.join(", ")})`,
+            label: `Matching request rows added (${item.evidenceTargets.join(", ")})`,
             done: evidenceDone,
           },
           {
-            label: `Certified technician assigned (${item.assignee})`,
+            label: `Correct staff member assigned (${item.assignee})`,
             done: taskState.assignee === item.assignee,
           },
           {
@@ -1948,11 +1985,11 @@
             done: taskState.slot === item.slot,
           },
           {
-            label: `Latest signed revision attached (${item.report})`,
+            label: `Latest approved setup sheet attached (${item.report})`,
             done: taskState.report === item.report,
           },
           {
-            label: "Packet moved to Ready for review",
+            label: "Request moved to Ready for review",
             done: taskState.review === "Ready for review",
           },
         ];
@@ -1973,7 +2010,7 @@
         const taskState = currentState();
         detailTitle.textContent = item.id;
         detailSubtitle.textContent = item.subtitle;
-        recordId.textContent = `Packet ${item.packet}`;
+        recordId.textContent = `Setup ${item.packet}`;
         assetSummary.textContent = taskState.selectedAsset || "Unselected";
         codeSummary.textContent = taskState.anomalyCode || "Unconfirmed";
         evidenceSummary.textContent = `${taskState.evidenceSelection.length} rows`;
@@ -1984,7 +2021,7 @@
         if (taskState.evidenceSelection.length === 0) {
           const pill = document.createElement("div");
           pill.className = "pill";
-          pill.textContent = "No evidence rows selected";
+          pill.textContent = "No request rows selected";
           selectedEvidence.appendChild(pill);
         } else {
           taskState.evidenceSelection.forEach((rowId) => {
@@ -2035,16 +2072,16 @@
           "segmented two",
         );
 
-        auditTitle.textContent = `Audit for ${item.id}`;
+        auditTitle.textContent = `Summary for ${item.id}`;
         auditCopy.textContent = item.altIntent
-          ? `Current final-state target: ${item.targetAsset}. This case also supports a later redirect to ${item.altIntent.targetAsset} with different evidence rows, technician, slot, and signed revision.`
-          : "Current final-state target: C-17L. The packet should only use west-branch evidence and the west-branch signed revision.";
+          ? `Requested room: ${item.targetAsset}. The nearby ${item.altIntent.targetAsset} has separate records, so keep all room-dependent fields matched to the selected room.`
+          : `Requested room: ${item.targetAsset}. Use only the matching request rows and the approved setup sheet for that room.`;
       }
 
       saveButton.addEventListener("click", () => {
         const item = currentCase();
         const taskState = currentState();
-        saveMessage.textContent = `Saved ${item.id}: asset ${taskState.selectedAsset || "none"}, code ${taskState.anomalyCode || "none"}, evidence ${taskState.evidenceSelection.join(", ") || "none"}, technician ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, attachment ${taskState.report || "none"}, status ${taskState.review}.`;
+        saveMessage.textContent = `Saved ${item.id}: room ${taskState.selectedAsset || "none"}, setup type ${taskState.anomalyCode || "none"}, request rows ${taskState.evidenceSelection.join(", ") || "none"}, staff ${taskState.assignee || "none"}, slot ${taskState.slot || "none"}, attachment ${taskState.report || "none"}, status ${taskState.review}.`;
       });
 
       modalCloseButton.addEventListener("click", () => {
